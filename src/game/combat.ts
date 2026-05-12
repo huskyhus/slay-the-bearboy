@@ -119,7 +119,7 @@ export function initCombat(
 
 export function drawCards(state: CombatState, count: number): CombatState {
   let deck = [...state.deck];
-  let hand = [...state.hand];
+  const hand = [...state.hand];
   let discard = [...state.discard];
   const { maxHandSize } = GAME_CONFIG.player;
 
@@ -318,15 +318,12 @@ function applyDamageToEnemy(
 export function endPlayerTurn(state: CombatState): CombatState {
   if (state.phase !== "player_turn") return state;
 
-  // Discard hand
-  let newState: CombatState = {
+  return {
     ...state,
-    phase: "enemy_turn",
+    phase: "enemy_turn" as const,
     hand: [],
     discard: [...state.discard, ...state.hand],
   };
-
-  return newState;
 }
 
 // --- Enemy Turn ---
@@ -338,7 +335,8 @@ export function executeEnemyTurn(
   if (state.phase !== "enemy_turn") return state;
 
   let player: PlayerState = { ...state.player };
-  let enemies = state.enemies.map((e) => ({ ...e }));
+  // Reset enemy block at the start of enemy turn
+  let enemies = state.enemies.map((e) => ({ ...e, block: 0 }));
 
   for (const enemy of enemies) {
     const intent = enemy.currentIntent;
@@ -411,11 +409,10 @@ export function executeEnemyTurn(
 
   enemies = enemies.map((e) => ({
     ...e,
-    block: 0,
     statusEffects: tickStatusEffects(e.statusEffects),
   }));
 
-  let newState: CombatState = {
+  const newState: CombatState = {
     ...state,
     phase: "player_turn",
     turn: state.turn + 1,

@@ -4,7 +4,6 @@ import type { CardDefinition } from "@/src/game/types";
 
 interface Props {
   def: CardDefinition;
-  instanceId: string;
   isSelected: boolean;
   isPlayable: boolean;
   onSelect: () => void;
@@ -25,7 +24,6 @@ function rarityBg(rarity: string): string {
 
 export default function CardComponent({
   def,
-  instanceId,
   isSelected,
   isPlayable,
   onSelect,

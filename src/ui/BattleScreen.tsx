@@ -113,7 +113,6 @@ export default function BattleScreen() {
             <CardComponent
               key={card.instanceId}
               def={def}
-              instanceId={card.instanceId}
               isSelected={card.instanceId === selectedCardInstanceId}
               isPlayable={
                 combat.phase === "player_turn" &&
