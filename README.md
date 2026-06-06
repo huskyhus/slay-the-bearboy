@@ -75,7 +75,7 @@ docker compose -f docker/docker-compose.yml exec web npm install zustand
 cd app && npm install zustand
 ```
 
-Docker 利用中にホスト側で `package.json` を変更した場合、`task restart` (起動コマンドの先頭で `npm install` が走る) で取り込めます。
+Docker 利用中にホスト側で `package.json` を変更した場合、`task down && task up` で再起動すれば、起動コマンドの先頭で `npm install` が走るので取り込まれます。
 
 ## Taskfile コマンド一覧
 
@@ -84,12 +84,8 @@ Docker 利用中にホスト側で `package.json` を変更した場合、`task 
 | `task up` | コンテナ起動 (バックグラウンド) |
 | `task down` | 停止 |
 | `task clean` | ボリュームまで削除 |
-| `task restart` | web 再起動 |
-| `task logs` | ログ追跡 |
-| `task shell` | コンテナ内に入る |
 | `task install -- <pkg>` | パッケージ追加 |
 | `task lint` | lint 実行 |
-| `task build` | イメージ再ビルド |
 
 ## 関連ドキュメント
 

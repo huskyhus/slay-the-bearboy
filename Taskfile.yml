@@ -23,22 +23,6 @@ tasks:
     desc: コンテナ・ボリューム (node_modules, .next キャッシュ) ごと削除
     cmd: '{{.COMPOSE}} down -v'
 
-  build:
-    desc: イメージを再ビルド
-    cmd: '{{.COMPOSE}} build'
-
-  restart:
-    desc: web コンテナを再起動 (起動時に npm install が走る)
-    cmd: '{{.COMPOSE}} restart web'
-
-  logs:
-    desc: web のログを追跡
-    cmd: '{{.COMPOSE}} logs -f web'
-
-  shell:
-    desc: コンテナ内に sh で入る
-    cmd: '{{.COMPOSE}} exec web sh'
-
   install:
     desc: コンテナ内で npm install を実行 (CLI_ARGS で引数指定。例 task install -- zustand)
     cmd: '{{.COMPOSE}} exec web npm install {{.CLI_ARGS}}'
