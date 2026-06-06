@@ -15,15 +15,11 @@ services:
     develop:
       watch:
         - path: package.json
-          action: sync+exec
+          action: sync
           target: /app/package.json
-          exec:
-            command: npm install
         - path: package-lock.json
-          action: sync+exec
+          action: sync
           target: /app/package-lock.json
-          exec:
-            command: npm install
 
 volumes:
   node_modules:
