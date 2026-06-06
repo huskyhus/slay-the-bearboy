@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# slay-the-bearboy
 
-## Getting Started
+Next.js 16.2.6 製のアプリケーション。ローカル開発は Docker Compose で完結します。
 
-First, run the development server:
+## 必要環境
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Docker / Docker Compose
+- (任意) [Task](https://taskfile.dev)
+    -  ショートカット用。なくてもdockerの操作を直接扱えるが、入れておくとdockerの操作を覚えずに利用ができる。
+
+ホストに Node.js を入れる必要はありません。
+
+## 起動
+
+```sh
+cp .env.example .env   # 初回のみ。PORT を変えたいときは編集
+docker compose up -d
+# または
+task up
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`http://localhost:${PORT}` (デフォルト 3000) でアクセスできます。ソースコードはバインドマウントされており、編集すると Next.js の HMR で即反映されます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 停止
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+docker compose down       # コンテナのみ
+docker compose down -v    # node_modules / .next キャッシュも削除
+# または
+task down / task clean
+```
 
-## Learn More
+## ポート変更
 
-To learn more about Next.js, take a look at the following resources:
+`.env` の `PORT` を書き換えて再起動します。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+echo 'PORT=4000' > .env
+task restart
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 依存パッケージの追加 / 更新
 
-## Deploy on Vercel
+ホストに Node を入れていない場合はコンテナ内で実行するのが最も簡単です。`package.json` / `package-lock.json` はバインドマウントなのでホスト側にも反映されます。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+docker compose exec web npm install zustand
+# または
+task install -- zustand
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ホストで `npm install` したい場合は watch モードで起動しておくと、`package-lock.json` の変更を検知してコンテナ内で自動的に `npm install` が走ります。
+
+```sh
+task up:watch        # docker compose up --watch
+# 別ターミナルで
+npm install zustand  # ホスト側
+```
+
+`docker compose restart web` で起動しなおしても、起動コマンドの先頭で `npm install` が実行されるため依存の差分は取り込まれます。
+
+## よく使うコマンド (Taskfile)
+
+| コマンド | 用途 |
+|---|---|
+| `task up` | コンテナ起動 (バックグラウンド) |
+| `task up:watch` | 起動 + ファイル監視 (自動 npm install) |
+| `task down` | 停止 |
+| `task clean` | ボリュームまで削除 |
+| `task restart` | web 再起動 |
+| `task logs` | ログ追跡 |
+| `task shell` | コンテナ内に入る |
+| `task install -- <pkg>` | パッケージ追加 |
+| `task lint` | lint 実行 |
+| `task build` | イメージ再ビルド |
+
+## ファイル構成 (Docker 関連)
+
+- `Dockerfile` — Node.js 20 Alpine ベースの開発用イメージ
+- `docker-compose.yml` — web サービス定義、ボリューム、watch 設定
+- `.dockerignore` — ビルドコンテキストから除外するパス
+- `.env` — `PORT` などの環境変数 (gitignore 対象)
+- `.env.example` — `.env` の雛形
+- `Taskfile.yml` — よく使うコマンドのショートカット

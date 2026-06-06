@@ -1,0 +1,22 @@
+[
+  {
+    "id": "jaw_worm",
+    "name": "Jaw Worm",
+    "hp": 42,
+    "intents": [
+      { "type": "attack", "damage": 11 },
+      { "type": "defend", "block": 6 },
+      { "type": "attack", "damage": 11 }
+    ]
+  },
+  {
+    "id": "louse",
+    "name": "Louse",
+    "hp": 30,
+    "intents": [
+      { "type": "attack", "damage": 6 },
+      { "type": "debuff", "effect": "weak", "value": 1 },
+      { "type": "attack", "damage": 6 }
+    ]
+  }
+]
