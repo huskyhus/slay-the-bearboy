@@ -5,7 +5,8 @@ Next.js 16.2.6 製のアプリケーション。ローカル開発は Docker Com
 ## 必要環境
 
 - Docker / Docker Compose
-- (任意) [Task](https://taskfile.dev) — ショートカット用
+- (任意) [Task](https://taskfile.dev)
+    -  ショートカット用。なくてもdockerの操作を直接扱えるが、入れておくとdockerの操作を覚えずに利用ができる。
 
 ホストに Node.js を入れる必要はありません。
 
