@@ -19,14 +19,15 @@ slay-the-bearboy/
 
 ### 1. Docker を使わない (Node.js のみ)
 
-Node.js 20 を使います。バージョン管理は [mise](https://mise.jdx.dev/) を入れていれば `.mise.toml` から自動セットアップできます。
+Node.js 20 がインストールされていれば、それだけで起動できます。
 
 ```sh
-mise install    # 初回のみ。mise を入れていない場合は手動で Node.js 20 を用意
 cd app
 npm install
 npm run dev
 ```
+
+> [mise](https://mise.jdx.dev/) を使っている場合は、リポジトリ直下の `.mise.toml` から `mise install` で Node.js 20 を導入できます (任意)。
 
 ### 2. Docker を直接使う (Task 不要)
 
