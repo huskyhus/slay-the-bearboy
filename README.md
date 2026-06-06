@@ -68,7 +68,7 @@ task clean   # ボリュームまで削除
 ```sh
 task install -- zustand
 # または
-docker compose -f docker/docker-compose.yml exec web npm install zustand
+cd docker && docker compose exec web npm install zustand
 ```
 
 ### ホスト Node 利用時
