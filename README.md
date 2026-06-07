@@ -1,95 +1,84 @@
 # slay-the-bearboy
 
-Next.js 16.2.6 製のアプリケーション。3通りの方法で起動できます。
+Next.js 16.2.6 製のアプリケーション。ローカル開発は Docker Compose で完結します。
 
-## ディレクトリ構成
+## 必要環境
 
-```
-slay-the-bearboy/
-├── app/         # Next.js プロジェクト (package.json, src/, app/, public/, ...)
-├── docker/      # Dockerfile, docker-compose.yml, .env
-├── docs/        # 仕様・提案ドキュメント
-├── Taskfile.yml # よく使うコマンドのショートカット
-└── .mise.toml   # Node.js バージョン定義 (mise 使用時)
-```
+- Docker / Docker Compose
+- (任意) [Task](https://taskfile.dev)
+    -  ショートカット用。なくてもdockerの操作を直接扱えるが、入れておくとdockerの操作を覚えずに利用ができる。
 
-## 起動方法
+ホストに Node.js を入れる必要はありません。
 
-利用環境に応じて3通りから選べます。いずれも `http://localhost:${PORT}` (デフォルト 3000) でアクセスできます。
-
-### 1. Docker を使わない (Node.js のみ)
-
-Node.js 20 がインストールされていれば、それだけで起動できます。
+## 起動
 
 ```sh
-cd app
-npm install
-npm run dev
-```
-
-> [mise](https://mise.jdx.dev/) を使っている場合は、リポジトリ直下の `.mise.toml` から `mise install` で Node.js 20 を導入できます (任意)。
-
-### 2. Docker を直接使う (Task 不要)
-
-```sh
-cp docker/.env.example docker/.env   # 初回のみ
-cd docker
+cp .env.example .env   # 初回のみ。PORT を変えたいときは編集
 docker compose up -d
-```
-
-### 3. Task を使う (ルートから)
-
-```sh
-cp docker/.env.example docker/.env   # 初回のみ
+# または
 task up
 ```
 
-## ポート変更
-
-`docker/.env` の `PORT` を書き換えて再起動します。Node.js 直接起動の場合は `PORT=4000 npm run dev`。
+`http://localhost:${PORT}` (デフォルト 3000) でアクセスできます。ソースコードはバインドマウントされており、編集すると Next.js の HMR で即反映されます。
 
 ## 停止
 
 ```sh
-# Docker 直接
-cd docker && docker compose down       # コンテナのみ
-cd docker && docker compose down -v    # node_modules / .next キャッシュも削除
-
-# Task
-task down
-task clean   # ボリュームまで削除
-```
-
-## 依存パッケージの追加
-
-### Docker 利用時
-ホストに Node が無い場合はコンテナ内で実行します。`package.json` / `package-lock.json` はバインドマウントなのでホスト側にも反映されます。
-
-```sh
-task install -- zustand
+docker compose down       # コンテナのみ
+docker compose down -v    # node_modules / .next キャッシュも削除
 # または
-cd docker && docker compose exec web npm install zustand
+task down / task clean
 ```
 
-### ホスト Node 利用時
+## ポート変更
+
+`.env` の `PORT` を書き換えて再起動します。
+
 ```sh
-cd app && npm install zustand
+echo 'PORT=4000' > .env
+task restart
 ```
 
-Docker 利用中にホスト側で `package.json` を変更した場合、`task down && task up` で再起動すれば、起動コマンドの先頭で `npm install` が走るので取り込まれます。
+## 依存パッケージの追加 / 更新
 
-## Taskfile コマンド一覧
+ホストに Node を入れていない場合はコンテナ内で実行するのが最も簡単です。`package.json` / `package-lock.json` はバインドマウントなのでホスト側にも反映されます。
+
+```sh
+docker compose exec web npm install zustand
+# または
+task install -- zustand
+```
+
+ホストで `npm install` したい場合は watch モードで起動しておくと、`package-lock.json` の変更を検知してコンテナ内で自動的に `npm install` が走ります。
+
+```sh
+task up:watch        # docker compose up --watch
+# 別ターミナルで
+npm install zustand  # ホスト側
+```
+
+`docker compose restart web` で起動しなおしても、起動コマンドの先頭で `npm install` が実行されるため依存の差分は取り込まれます。
+
+## よく使うコマンド (Taskfile)
 
 | コマンド | 用途 |
 |---|---|
 | `task up` | コンテナ起動 (バックグラウンド) |
+| `task up:watch` | 起動 + ファイル監視 (自動 npm install) |
 | `task down` | 停止 |
 | `task clean` | ボリュームまで削除 |
+| `task restart` | web 再起動 |
+| `task logs` | ログ追跡 |
+| `task shell` | コンテナ内に入る |
 | `task install -- <pkg>` | パッケージ追加 |
 | `task lint` | lint 実行 |
+| `task build` | イメージ再ビルド |
 
-## 関連ドキュメント
+## ファイル構成 (Docker 関連)
 
-- [docs/game.md](docs/game.md) — ゲーム仕様
-- [docs/slay-the-bearboy-proposal.md](docs/slay-the-bearboy-proposal.md) — 提案書
-- [AGENTS.md](AGENTS.md) — AI エージェント向けガイド
+- `Dockerfile` — Node.js 20 Alpine ベースの開発用イメージ
+- `docker-compose.yml` — web サービス定義、ボリューム、watch 設定
+- `.dockerignore` — ビルドコンテキストから除外するパス
+- `.env` — `PORT` などの環境変数 (gitignore 対象)
+- `.env.example` — `.env` の雛形
+- `Taskfile.yml` — よく使うコマンドのショートカット
