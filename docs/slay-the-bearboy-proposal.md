@@ -89,21 +89,29 @@
 
 `src/store/` は Zustand ストアであり、`src/game/` の純粋関数を呼び出して状態を更新する「薄いラッパー」として機能する。`src/ui/` は React コンポーネントを置き、`src/store/` を購読して描画する。
 
-### 3.4 ディレクトリ構成（v1.0 時点の最小版）
+### 3.4 ディレクトリ構成（v1.0 時点）
+
+リポジトリ全体は関心事ごとに分割している。
 
 ```
 slay-the-bearboy/
-├── src/
-│   ├── app/           # Next.js App Router（ページ）
-│   ├── game/          # 純粋ロジック（DOM/React非依存）
-│   ├── ui/            # React コンポーネント
-│   └── store/         # Zustand ストア
-├── public/            # ハスくん画像など静的アセット
-├── data/              # カード定義（JSON）
-└── .github/           # Issue/PR テンプレート、Actions 等
+├── app/                    # Next.js プロジェクト一式
+│   ├── app/                # Next.js App Router（ページ）
+│   ├── src/
+│   │   ├── game/           # 純粋ロジック（DOM/React非依存）
+│   │   ├── ui/             # React コンポーネント
+│   │   └── store/          # Zustand ストア
+│   ├── data/               # カード定義（JSON）
+│   ├── public/             # ハスくん画像など静的アセット
+│   └── package.json
+├── docker/                 # Dockerfile, docker-compose.yml, .env
+├── docs/                   # 企画書・仕様などのドキュメント
+├── Taskfile.yml            # 起動・停止などのショートカット
+├── .mise.toml              # Node.js バージョン定義
+└── .github/                # Issue/PR テンプレート、Actions 等
 ```
 
-`docs/`, `tools/`, `src/sim/` などのディレクトリは v1.0 では設けず、必要が出てきた時点で追加する。
+ゲームロジックは `app/src/game/` に置き、UI (`app/src/ui/`) や状態管理 (`app/src/store/`) とは独立に保つ。`tools/`, `app/src/sim/` などは v1.0 では設けず、必要が出てきた時点で追加する。
 
 ### 3.5 Next.js 利用上の注意
 
