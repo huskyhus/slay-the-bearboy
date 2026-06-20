@@ -318,11 +318,17 @@ function applyDamageToEnemy(
 export function endPlayerTurn(state: CombatState): CombatState {
   if (state.phase !== "player_turn") return state;
 
+  // Tick player status effects at the end of the player's turn so that
+  // debuffs applied by enemies last through the player's following turn.
   return {
     ...state,
     phase: "enemy_turn" as const,
     hand: [],
     discard: [...state.discard, ...state.hand],
+    player: {
+      ...state.player,
+      statusEffects: tickStatusEffects(state.player.statusEffects),
+    },
   };
 }
 
@@ -399,14 +405,16 @@ export function executeEnemyTurn(
   // Start next player turn
   const { energyPerTurn, drawPerTurn } = GAME_CONFIG.player;
 
-  // Tick status effects
+  // Reset block and refill energy for the upcoming player turn.
+  // Player status effects are NOT ticked here; they tick in endPlayerTurn so
+  // that debuffs an enemy just applied remain active during the player's turn.
   player = {
     ...player,
     block: 0,
     energy: energyPerTurn,
-    statusEffects: tickStatusEffects(player.statusEffects),
   };
 
+  // Tick enemy status effects at the end of the enemy turn.
   enemies = enemies.map((e) => ({
     ...e,
     statusEffects: tickStatusEffects(e.statusEffects),

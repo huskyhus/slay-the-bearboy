@@ -1,6 +1,6 @@
 "use client";
 
-import BattleScreen from "@/src/ui/BattleScreen";
+import BattleScreen from "@/ui/BattleScreen";
 
 export default function PlayPage() {
   return (

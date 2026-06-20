@@ -1,92 +1,32 @@
 # slay-the-bearboy
 
-Next.js 16.2.6 製のアプリケーション。3通りの方法で起動できます。
-
 ## ディレクトリ構成
 
 ```
 slay-the-bearboy/
-├── app/         # Next.js プロジェクト (package.json, src/, app/, public/, ...)
-├── docker/      # Dockerfile, docker-compose.yml, .env
-├── docs/        # 仕様・提案ドキュメント
-├── Taskfile.yml # よく使うコマンドのショートカット
-└── .mise.toml   # Node.js バージョン定義 (mise 使用時)
+├── src/          # アプリケーションコード
+│   ├── app/      # Next.js App Router
+│   ├── game/     # 純粋ロジック（DOM/React 非依存）
+│   ├── ui/       # React コンポーネント
+│   ├── store/    # Zustand ストア
+│   └── data/     # カード・敵定義（JSON）
+├── stickers/     # ハスくん LINE スタンプ素材
+├── docs/         # 仕様・提案ドキュメント
+├── compose.yaml  # ローカル開発用 Docker Compose
+├── Taskfile.yml  # よく使うコマンドのショートカット
+└── ...
 ```
 
-## 起動方法
+## デプロイと Docker の位置づけ
 
-利用環境に応じて3通りから選べます。いずれも `http://localhost:${PORT}` (デフォルト 3000) でアクセスできます。
+- **本番デプロイは Vercel**。`git push` で自動デプロイされる。
+- **Docker (`compose.yaml`) はローカル開発専用**。カスタムイメージは不要なため Dockerfile は持たず、公式 `node` イメージを直接使う。ソースはバインドマウントで動かす。
 
-### 1. Docker を使わない (Node.js のみ)
+## タスク
 
-Node.js 20 がインストールされていれば、それだけで起動できます。
-
-```sh
-cd app
-npm install
-npm run dev
-```
-
-> [mise](https://mise.jdx.dev/) を使っている場合は、リポジトリ直下の `.mise.toml` から `mise install` で Node.js 20 を導入できます (任意)。
-
-### 2. Docker を直接使う (Task 不要)
-
-```sh
-cp docker/.env.example docker/.env   # 初回のみ
-cd docker
-docker compose up -d
-```
-
-### 3. Task を使う (ルートから)
-
-```sh
-cp docker/.env.example docker/.env   # 初回のみ
-task up
-```
-
-## ポート変更
-
-`docker/.env` の `PORT` を書き換えて再起動します。Node.js 直接起動の場合は `PORT=4000 npm run dev`。
-
-## 停止
-
-```sh
-# Docker 直接
-cd docker && docker compose down       # コンテナのみ
-cd docker && docker compose down -v    # node_modules / .next キャッシュも削除
-
-# Task
-task down
-task clean   # ボリュームまで削除
-```
-
-## 依存パッケージの追加
-
-### Docker 利用時
-ホストに Node が無い場合はコンテナ内で実行します。`package.json` / `package-lock.json` はバインドマウントなのでホスト側にも反映されます。
-
-```sh
-task install -- zustand
-# または
-cd docker && docker compose exec web npm install zustand
-```
-
-### ホスト Node 利用時
-```sh
-cd app && npm install zustand
-```
-
-Docker 利用中にホスト側で `package.json` を変更した場合、`task down && task up` で再起動すれば、起動コマンドの先頭で `npm install` が走るので取り込まれます。
-
-## Taskfile コマンド一覧
-
-| コマンド | 用途 |
-|---|---|
-| `task up` | コンテナ起動 (バックグラウンド) |
-| `task down` | 停止 |
-| `task clean` | ボリュームまで削除 |
-| `task install -- <pkg>` | パッケージ追加 |
-| `task lint` | lint 実行 |
+- 起動は`task up`, 停止は`task down`で行う。
+- (Nodeがローカルにない場合は起動中のみ,) lintは`task lint`、パッケージ追加は`task install -- <name>`（例: `task install -- zustand`）で行う。
+- Taskを入れていない場合は対応するdocker composeコマンドを直接叩いてもよい。
 
 ## 関連ドキュメント
 

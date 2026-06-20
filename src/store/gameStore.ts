@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { CardDefinition, CombatState, EnemyDefinition } from "@/src/game/types";
+import type { CardDefinition, CombatState, EnemyDefinition } from "@/game/types";
 import {
   initCombat,
   playCard,
@@ -7,7 +7,7 @@ import {
   executeEnemyTurn,
   needsTarget,
   hasAoeEffect,
-} from "@/src/game/combat";
+} from "@/game/combat";
 import cardsData from "@/data/cards.json";
 import enemiesData from "@/data/enemies.json";
 
