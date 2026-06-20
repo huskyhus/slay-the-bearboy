@@ -56,22 +56,20 @@ task up
 
 ```sh
 # Docker 直接
-docker compose down       # コンテナのみ
-docker compose down -v    # node_modules / .next キャッシュも削除
+docker compose down
 
 # Task
 task down
-task clean   # ボリュームまで削除
 ```
+
+`node_modules` / `.next` はバインドマウント先（リポジトリ直下）に作られるため、消したい場合はホストで `rm -rf node_modules .next` する。
 
 ## 依存パッケージの追加
 
 ### Docker 利用時
-ホストに Node が無い場合はコンテナ内で実行します。`package.json` / `package-lock.json` はバインドマウントなのでホスト側にも反映されます。
+ホストに Node が無い場合はコンテナ内で実行します（要起動中）。`package.json` / `package-lock.json` はバインドマウントなのでホスト側にも反映されます。
 
 ```sh
-task install -- zustand
-# または
 docker compose exec web npm install zustand
 ```
 
@@ -88,8 +86,6 @@ Docker 利用中にホスト側で `package.json` を変更した場合、`task 
 |---|---|
 | `task up` | コンテナ起動 (バックグラウンド) |
 | `task down` | 停止 |
-| `task clean` | ボリュームまで削除 |
-| `task install -- <pkg>` | パッケージ追加 |
 | `task lint` | lint 実行 |
 
 ## 関連ドキュメント

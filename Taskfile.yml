@@ -15,14 +15,6 @@ tasks:
     desc: コンテナを停止・削除
     cmd: '{{.COMPOSE}} down'
 
-  clean:
-    desc: コンテナ・ボリューム (node_modules, .next キャッシュ) ごと削除
-    cmd: '{{.COMPOSE}} down -v'
-
-  install:
-    desc: コンテナ内で npm install を実行 (CLI_ARGS で引数指定。例 task install -- zustand)
-    cmd: '{{.COMPOSE}} exec web npm install {{.CLI_ARGS}}'
-
   lint:
     desc: コンテナ内で lint
     cmd: '{{.COMPOSE}} exec web npm run lint'
