@@ -95,7 +95,7 @@
 
 ```
 slay-the-bearboy/
-├── app/                    # Next.js プロジェクト一式
+├── web/                    # Next.js プロジェクト一式
 │   ├── app/                # Next.js App Router（ページ）
 │   ├── src/
 │   │   ├── game/           # 純粋ロジック（DOM/React非依存）
@@ -111,7 +111,7 @@ slay-the-bearboy/
 └── .github/                # Issue/PR テンプレート、Actions 等
 ```
 
-ゲームロジックは `app/src/game/` に置き、UI (`app/src/ui/`) や状態管理 (`app/src/store/`) とは独立に保つ。`tools/`, `app/src/sim/` などは v1.0 では設けず、必要が出てきた時点で追加する。
+ゲームロジックは `web/src/game/` に置き、UI (`web/src/ui/`) や状態管理 (`web/src/store/`) とは独立に保つ。`tools/`, `web/src/sim/` などは v1.0 では設けず、必要が出てきた時点で追加する。
 
 ### 3.5 Next.js 利用上の注意
 
