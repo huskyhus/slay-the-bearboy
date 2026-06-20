@@ -1,9 +1,7 @@
 version: '3'
 
-dotenv: ['docker/.env']
-
 vars:
-  COMPOSE: docker compose -f docker/docker-compose.yml
+  COMPOSE: docker compose
 
 tasks:
   up:
@@ -11,9 +9,7 @@ tasks:
     silent: true
     cmds:
       - '{{.COMPOSE}} up -d'
-      - 'echo ""'
-      - 'echo "  URL: http://localhost:${PORT:-3000}"'
-      - 'echo ""'
+      - 'echo "  URL: http://localhost:3000"'
 
   down:
     desc: コンテナを停止・削除

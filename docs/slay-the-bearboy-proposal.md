@@ -102,12 +102,12 @@ slay-the-bearboy/
 │   │   ├── ui/             # React コンポーネント
 │   │   └── store/          # Zustand ストア
 │   ├── data/               # カード定義（JSON）
-│   ├── public/             # ハスくん画像など静的アセット
+│   ├── public/             # Next.js 静的配信ディレクトリ
+│   ├── stickers/           # ハスくん LINE スタンプ素材（原本）
 │   └── package.json
-├── docker/                 # Dockerfile, docker-compose.yml, .env
+├── compose.yaml            # ローカル dev 用 Docker Compose（本番は Vercel）
 ├── docs/                   # 企画書・仕様などのドキュメント
 ├── Taskfile.yml            # 起動・停止などのショートカット
-├── .mise.toml              # Node.js バージョン定義
 └── .github/                # Issue/PR テンプレート、Actions 等
 ```
 
@@ -121,6 +121,14 @@ slay-the-bearboy/
 - ルーティング例：
   - `/`（タイトル画面）：サーバーコンポーネント
   - `/play`（ゲーム本体）：クライアントコンポーネント
+
+### 3.6 デプロイと Docker の役割分担
+
+- **本番デプロイは Vercel に確定**。`git push` での自動デプロイを利用する。
+- Next.js プロジェクトはリポジトリ直下ではなく `web/` 配下にあるため、**Vercel のプロジェクト設定で Root Directory を `web` に指定する**（モノレポ向けの標準機能）。これによりサブディレクトリ構成のままデプロイできる。
+- **Docker（リポジトリ直下の `compose.yaml`）はローカル開発専用**。Vercel は本番ビルドで Docker を一切参照せず、独自パイプラインで `next build` を実行する。したがって Docker 設定は本番に影響しない。
+- Docker はローカル dev 専用と割り切るため、カスタムイメージは作らず公式 `node` イメージを直接使い、`web/` のソースはバインドマウントで提供する。Dockerfile も `.dockerignore` も持たない。
+- ポートは 3000 に固定する（プロトタイプでは可変にする必要がないため）。
 
 ---
 

@@ -1,0 +1,17 @@
+# ローカル開発専用。本番デプロイは Vercel が担当し、この compose は本番では使われない。
+# カスタムイメージは不要なため Dockerfile は持たず、公式 node イメージを直接使う。
+# ソースと依存はバインドマウント (./web:/app) と command (npm install && npm run dev) が供給する。
+name: slay-the-bearboy
+
+services:
+  web:
+    image: node:24-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/app
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+    command: sh -c 'npm install && npm run dev -- -p 3000'
