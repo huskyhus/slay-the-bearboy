@@ -1,3 +1,3 @@
 @AGENTS.md
-@slay-the-bearboy-proposal.md
-@game.md
+@docs/slay-the-bearboy-proposal.md
+@docs/game.md

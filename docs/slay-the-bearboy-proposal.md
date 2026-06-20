@@ -89,21 +89,29 @@
 
 `src/store/` は Zustand ストアであり、`src/game/` の純粋関数を呼び出して状態を更新する「薄いラッパー」として機能する。`src/ui/` は React コンポーネントを置き、`src/store/` を購読して描画する。
 
-### 3.4 ディレクトリ構成（v1.0 時点の最小版）
+### 3.4 ディレクトリ構成（v1.0 時点）
+
+リポジトリ全体は関心事ごとに分割している。
+
+Next.js プロジェクトをリポジトリ直下に置き（Vercel デプロイが最も素直になる）、アプリケーションコードは Next.js の `src` 規約に従って `src/` にまとめる。設定ファイル類はリポジトリ直下に残す。
 
 ```
 slay-the-bearboy/
-├── src/
-│   ├── app/           # Next.js App Router（ページ）
-│   ├── game/          # 純粋ロジック（DOM/React非依存）
-│   ├── ui/            # React コンポーネント
-│   └── store/         # Zustand ストア
-├── public/            # ハスくん画像など静的アセット
-├── data/              # カード定義（JSON）
-└── .github/           # Issue/PR テンプレート、Actions 等
+├── src/                    # アプリケーションコード（src 規約）
+│   ├── app/                # Next.js App Router（ページ）
+│   ├── game/               # 純粋ロジック（DOM/React非依存）
+│   ├── ui/                 # React コンポーネント
+│   ├── store/              # Zustand ストア
+│   └── data/               # カード・敵定義（JSON）
+├── stickers/               # ハスくん LINE スタンプ素材（原本）
+├── package.json            # 設定類はリポジトリ直下（tsconfig, next.config 等）
+├── compose.yaml            # ローカル dev 用 Docker Compose（本番は Vercel）
+├── docs/                   # 企画書・仕様などのドキュメント
+├── Taskfile.yml            # 起動・停止などのショートカット
+└── .github/                # Issue/PR テンプレート、Actions 等
 ```
 
-`docs/`, `tools/`, `src/sim/` などのディレクトリは v1.0 では設けず、必要が出てきた時点で追加する。
+ゲームロジックは `src/game/` に置き、UI (`src/ui/`) や状態管理 (`src/store/`) とは独立に保つ。`tools/`, `src/sim/` などは v1.0 では設けず、必要が出てきた時点で追加する。import エイリアスは `@/*` → `src/*`（例: `@/game/types`）。
 
 ### 3.5 Next.js 利用上の注意
 
@@ -113,6 +121,14 @@ slay-the-bearboy/
 - ルーティング例：
   - `/`（タイトル画面）：サーバーコンポーネント
   - `/play`（ゲーム本体）：クライアントコンポーネント
+
+### 3.6 デプロイと Docker の役割分担
+
+- **本番デプロイは Vercel に確定**。`git push` での自動デプロイを利用する。
+- Next.js プロジェクトはリポジトリ直下に置くため、**Vercel の Root Directory はデフォルト（ルート）のままでよい**。特別な設定は不要。
+- **Docker（リポジトリ直下の `compose.yaml`）はローカル開発専用**。Vercel は本番ビルドで Docker を一切参照せず、独自パイプラインで `next build` を実行する。したがって Docker 設定は本番に影響しない。
+- Docker はローカル dev 専用と割り切るため、カスタムイメージは作らず公式 `node` イメージを直接使い、リポジトリ直下をバインドマウントで提供する。Dockerfile も `.dockerignore` も持たない。
+- ポートは 3000 に固定する（プロトタイプでは可変にする必要がないため）。
 
 ---
 

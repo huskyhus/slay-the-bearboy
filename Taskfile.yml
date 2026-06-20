@@ -1,54 +1,24 @@
 version: '3'
 
-dotenv: ['.env']
+vars:
+  COMPOSE: docker compose
 
 tasks:
   up:
     desc: コンテナを起動 (バックグラウンド)
     silent: true
     cmds:
-      - docker compose up -d
-      - 'echo ""'
-      - 'echo "  URL: http://localhost:${PORT:-3000}"'
-      - 'echo ""'
-
-  up:watch:
-    desc: 起動 + package-lock.json を監視して自動 npm install
-    silent: true
-    cmds:
-      - 'echo ""'
-      - 'echo "  URL: http://localhost:${PORT:-3000}"'
-      - 'echo ""'
-      - docker compose up --watch
+      - '{{.COMPOSE}} up -d'
+      - 'echo "  URL: http://localhost:3000"'
 
   down:
     desc: コンテナを停止・削除
-    cmd: docker compose down
-
-  clean:
-    desc: コンテナ・ボリューム (node_modules, .next キャッシュ) ごと削除
-    cmd: docker compose down -v
-
-  build:
-    desc: イメージを再ビルド
-    cmd: docker compose build
-
-  restart:
-    desc: web コンテナを再起動 (起動時に npm install が走る)
-    cmd: docker compose restart web
-
-  logs:
-    desc: web のログを追跡
-    cmd: docker compose logs -f web
-
-  shell:
-    desc: コンテナ内に sh で入る
-    cmd: docker compose exec web sh
-
-  install:
-    desc: コンテナ内で npm install を実行 (CLI_ARGS で引数指定。例 task install -- zustand)
-    cmd: docker compose exec web npm install {{.CLI_ARGS}}
+    cmd: '{{.COMPOSE}} down'
 
   lint:
     desc: コンテナ内で lint
-    cmd: docker compose exec web npm run lint
+    cmd: '{{.COMPOSE}} exec web npm run lint'
+  
+  install:
+    desc: コンテナ内で npm install を実行 (例: task install -- zustand)
+    cmd: '{{.COMPOSE}} exec web npm install {{.CLI_ARGS}}'

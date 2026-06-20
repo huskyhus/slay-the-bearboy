@@ -1,6 +1,6 @@
 "use client";
 
-import type { EnemyState } from "@/src/game/types";
+import type { EnemyState } from "@/game/types";
 
 interface Props {
   enemy: EnemyState;

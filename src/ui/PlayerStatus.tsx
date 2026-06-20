@@ -1,6 +1,6 @@
 "use client";
 
-import type { PlayerState } from "@/src/game/types";
+import type { PlayerState } from "@/game/types";
 
 interface Props {
   player: PlayerState;
