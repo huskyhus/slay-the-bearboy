@@ -1,6 +1,6 @@
 "use client";
 
-import type { CardDefinition } from "@/src/game/types";
+import type { CardDefinition } from "@/game/types";
 
 interface Props {
   def: CardDefinition;

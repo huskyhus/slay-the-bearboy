@@ -1,6 +1,6 @@
 "use client";
 
-import { useGameStore, getCardDef } from "@/src/store/gameStore";
+import { useGameStore, getCardDef } from "@/store/gameStore";
 import PlayerStatus from "./PlayerStatus";
 import EnemyComponent from "./EnemyComponent";
 import CardComponent from "./CardComponent";

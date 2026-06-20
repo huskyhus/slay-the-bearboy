@@ -1,6 +1,6 @@
 # ローカル開発専用。本番デプロイは Vercel が担当し、この compose は本番では使われない。
 # カスタムイメージは不要なため Dockerfile は持たず、公式 node イメージを直接使う。
-# ソースと依存はバインドマウント (./web:/app) と command (npm install && npm run dev) が供給する。
+# ソースと依存はバインドマウント (.:/app) と command (npm install && npm run dev) が供給する。
 name: slay-the-bearboy
 
 services:
@@ -10,7 +10,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./web:/app
+      - .:/app
     environment:
       - NODE_ENV=development
       - WATCHPACK_POLLING=true
