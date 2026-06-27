@@ -10,7 +10,7 @@ slay-the-bearboy/
 │   ├── ui/       # React コンポーネント
 │   ├── store/    # Zustand ストア
 │   └── data/     # カード・敵定義（JSON）
-├── stickers/     # ハスくん LINE スタンプ素材
+├── public/       # 静的アセット（ハスくん スタンプ画像を URL 配信）
 ├── docs/         # 仕様・提案ドキュメント
 ├── compose.yaml  # ローカル開発用 Docker Compose
 ├── Taskfile.yml  # よく使うコマンドのショートカット

@@ -24,6 +24,7 @@ export interface CardDefinition {
   rarity: CardRarity;
   effects: CardEffect[];
   description: string;
+  image: string;
 }
 
 // Runtime card instance (each card in deck gets a unique instanceId)

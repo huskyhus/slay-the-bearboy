@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import type { CardDefinition } from "@/game/types";
 
 interface Props {
@@ -53,6 +55,15 @@ export default function CardComponent({
       </div>
       <div className="mt-1 text-[10px] uppercase tracking-wider text-zinc-500">
         {def.type}
+      </div>
+      <div className="relative mt-2 h-20 w-full overflow-hidden rounded bg-zinc-900/40">
+        <Image
+          src={def.image}
+          alt={def.name}
+          fill
+          sizes="128px"
+          className="object-contain"
+        />
       </div>
       <div className="mt-2 text-[11px] leading-tight text-zinc-400">
         {def.description}
