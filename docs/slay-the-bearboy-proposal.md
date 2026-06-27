@@ -103,7 +103,7 @@ slay-the-bearboy/
 │   ├── ui/                 # React コンポーネント
 │   ├── store/              # Zustand ストア
 │   └── data/               # カード・敵定義（JSON）
-├── stickers/               # ハスくん LINE スタンプ素材（原本）
+├── public/                 # 静的アセット（ハスくん スタンプ画像を URL 配信）
 ├── package.json            # 設定類はリポジトリ直下（tsconfig, next.config 等）
 ├── compose.yaml            # ローカル dev 用 Docker Compose（本番は Vercel）
 ├── docs/                   # 企画書・仕様などのドキュメント

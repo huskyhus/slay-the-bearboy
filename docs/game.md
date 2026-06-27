@@ -4,18 +4,20 @@
 
 ### 1.1 プレイヤーステータス
 
-| ステータス | 初期値 | 説明 |
-|-----------|--------|------|
-| HP | 80 | 0になると敗北 |
-| ブロック | 0 | 毎ターン開始時にリセット。ダメージを先に吸収する |
-| エナジー | 3 | 毎ターン開始時に3に回復。カード使用で消費 |
+| ステータス | 説明 |
+|-----------|------|
+| HP | 0になると敗北。初期値・最大値は `GAME_CONFIG.player.maxHp` |
+| ブロック | 毎ターン開始時に0へリセット。ダメージを先に吸収する |
+| エナジー | 毎ターン開始時に `GAME_CONFIG.player.energyPerTurn` へ回復。カード使用で消費 |
+
+> 具体的な数値は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG` を正とする（ドキュメントには数値を重複させない）。
 
 ### 1.2 ターンフロー
 
 1. **プレイヤーターン開始**
    - ブロックを0にリセット
-   - エナジーを3に回復
-   - 山札から5枚ドロー（山札が足りなければ捨て札をシャッフルして山札に戻す）
+   - エナジーを `GAME_CONFIG.player.energyPerTurn` へ回復
+   - 山札から `GAME_CONFIG.player.drawPerTurn` 枚ドロー（山札が足りなければ捨て札をシャッフルして山札に戻す）
 2. **プレイヤーの行動**
    - 手札からカードを選んでプレイ（エナジーが足りる限り何枚でも）
 3. **ターン終了**
@@ -32,15 +34,19 @@
 
 | 効果 | 対象 | 説明 | 持続 |
 |------|------|------|------|
-| Vulnerable（脆弱） | 敵 or プレイヤー | 受けるダメージが50%増加（端数切捨て） | ターン数で減少（ターン開始時に1減少） |
-| Weak（弱体） | 敵 or プレイヤー | 与えるダメージが25%減少（端数切捨て） | ターン数で減少（ターン開始時に1減少） |
+| Vulnerable（脆弱） | 敵 or プレイヤー | 受けるダメージを `GAME_CONFIG.combat.vulnerableMultiplier` 倍（端数切捨て） | ターン数で減少（ターン開始時に1減少） |
+| Weak（弱体） | 敵 or プレイヤー | 与えるダメージを `GAME_CONFIG.combat.weakMultiplier` 倍（端数切捨て） | ターン数で減少（ターン開始時に1減少） |
+
+> 倍率は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG.combat` を正とする。
 
 ### 1.4 ダメージ計算
 
+ダメージ計算の実装を正とする： [src/game/combat.ts](../src/game/combat.ts)。アルゴリズムの要点は以下のとおり（倍率は `GAME_CONFIG.combat`）。
+
 ```
 基礎ダメージ = カードの damage 値
-弱体補正   = 攻撃側が Weak なら × 0.75（端数切捨て）
-脆弱補正   = 防御側が Vulnerable なら × 1.5（端数切捨て）
+弱体補正   = 攻撃側が Weak なら × weakMultiplier（端数切捨て）
+脆弱補正   = 防御側が Vulnerable なら × vulnerableMultiplier（端数切捨て）
 最終ダメージ = floor(floor(基礎ダメージ × 弱体補正) × 脆弱補正)
 
 実ダメージ  = max(0, 最終ダメージ - 防御側のブロック)
@@ -57,59 +63,30 @@ HP減少     = 実ダメージ
 | ゾーン | 説明 |
 |--------|------|
 | デッキ（山札） | ドロー元。空になったら捨て札をシャッフルして補充 |
-| 手札 | プレイ可能なカード。最大10枚 |
+| 手札 | プレイ可能なカード。上限は `GAME_CONFIG.player.maxHandSize` |
 | 捨て札 | 使用済み・ターン終了時に手札から移動 |
 | 除外 | ゲームから除外されたカード。再利用不可 |
 
 ### 2.2 データ構造
 
-```typescript
-type CardType = "attack" | "skill";
-type CardRarity = "basic" | "common" | "uncommon";
+カード関連の型定義（`CardType` / `CardRarity` / `EffectType` / `CardEffect` / `CardDefinition`）は [src/game/types.ts](../src/game/types.ts) を正とする。各効果種別の意味は以下のとおり。
 
-type EffectType =
-  | "damage"          // 単体ダメージ
-  | "damage_all"      // 全体ダメージ
-  | "block"           // ブロック付与（自分）
-  | "apply_vulnerable"// 脆弱付与
-  | "apply_weak"      // 弱体付与
-  | "draw";           // カードドロー
+| EffectType | 意味 |
+|------------|------|
+| `damage` | 単体ダメージ |
+| `damage_all` | 全体ダメージ |
+| `block` | ブロック付与（自分） |
+| `apply_vulnerable` | 脆弱付与 |
+| `apply_weak` | 弱体付与 |
+| `draw` | カードドロー |
 
-interface CardEffect {
-  type: EffectType;
-  value: number;
-}
+### 2.3 カード一覧
 
-interface CardDefinition {
-  id: string;
-  name: string;
-  type: CardType;
-  cost: number;
-  rarity: CardRarity;
-  effects: CardEffect[];
-  description: string;
-}
-```
-
-### 2.3 カード一覧（11枚）
-
-| ID | 名前 | タイプ | コスト | レアリティ | 効果 | 説明 |
-|----|------|--------|--------|-----------|------|------|
-| strike | Strike | attack | 1 | basic | damage 6 | Deal 6 damage. |
-| defend | Defend | skill | 1 | basic | block 5 | Gain 5 Block. |
-| bash | Bash | attack | 2 | basic | damage 8, apply_vulnerable 2 | Deal 8 damage. Apply 2 Vulnerable. |
-| iron_wave | Iron Wave | attack | 1 | common | damage 5, block 5 | Deal 5 damage. Gain 5 Block. |
-| cleave | Cleave | attack | 1 | common | damage_all 8 | Deal 8 damage to ALL enemies. |
-| clothesline | Clothesline | attack | 2 | common | damage 12, apply_weak 2 | Deal 12 damage. Apply 2 Weak. |
-| shrug_it_off | Shrug It Off | skill | 1 | common | block 8, draw 1 | Gain 8 Block. Draw 1 card. |
-| pommel_strike | Pommel Strike | attack | 1 | common | damage 9, draw 1 | Deal 9 damage. Draw 1 card. |
-| uppercut | Uppercut | attack | 2 | uncommon | damage 13, apply_weak 1, apply_vulnerable 1 | Deal 13 damage. Apply 1 Weak. Apply 1 Vulnerable. |
-| battle_trance | Battle Trance | skill | 0 | uncommon | draw 3 | Draw 3 cards. |
-| thunderclap | Thunderclap | attack | 1 | common | damage_all 4, apply_vulnerable 1 | Deal 4 damage to ALL enemies. Apply 1 Vulnerable. |
+全カードの定義（ID・名前・タイプ・コスト・レアリティ・効果・説明・画像）は [src/data/cards.json](../src/data/cards.json) を正とする。各カードはスタンプ画像 (`image`) を持ち、[public/](../public/) 配下の画像を URL で参照する。
 
 ### 2.4 初期デッキ（v1.0 プロトタイプ）
 
-v1.0 ではデッキ成長がないため、全11種を各1枚ずつデッキに含める。
+v1.0 ではデッキ成長がないため、[cards.json](../src/data/cards.json) に定義された全種を各1枚ずつデッキに含める。
 
 ---
 
@@ -117,19 +94,7 @@ v1.0 ではデッキ成長がないため、全11種を各1枚ずつデッキに
 
 ### 3.1 敵データ構造
 
-```typescript
-type EnemyIntent =
-  | { type: "attack"; damage: number }
-  | { type: "defend"; block: number }
-  | { type: "debuff"; effect: "weak" | "vulnerable"; value: number };
-
-interface EnemyDefinition {
-  id: string;
-  name: string;
-  hp: number;
-  intents: EnemyIntent[];  // 固定ローテーション（先頭から順に繰り返す）
-}
-```
+敵関連の型定義（`EnemyIntent` / `EnemyDefinition`）は [src/game/types.ts](../src/game/types.ts) を正とする。`intents` は固定ローテーション（先頭から順に繰り返す）を表す。
 
 ### 3.2 敵の行動決定
 
@@ -137,33 +102,7 @@ v1.0 では敵ごとに固定のインテントパターン（ローテーショ
 
 ### 3.3 v1.0 エンカウント（雑魚2体）
 
-#### Jaw Worm
-
-| ステータス | 値 |
-|-----------|-----|
-| HP | 42 |
-
-**行動ローテーション：**
-
-| 順番 | 行動 | 値 |
-|------|------|----|
-| 1 | attack | 11 ダメージ |
-| 2 | defend | 6 ブロック |
-| 3 | attack | 11 ダメージ |
-
-#### Louse
-
-| ステータス | 値 |
-|-----------|-----|
-| HP | 30 |
-
-**行動ローテーション：**
-
-| 順番 | 行動 | 値 |
-|------|------|----|
-| 1 | attack | 6 ダメージ |
-| 2 | debuff | Weak 1ターン |
-| 3 | attack | 6 ダメージ |
+v1.0 では **Jaw Worm** と **Louse** の2体が登場する。各敵の HP と行動ローテーション（`intents`）の具体値は [src/data/enemies.json](../src/data/enemies.json) を正とする。
 
 ---
 
@@ -177,20 +116,4 @@ v1.0 では敵ごとに固定のインテントパターン（ローテーショ
 
 ## 5. 定数定義
 
-以下の値は設定ファイル（`src/game/config.ts`）に定数として宣言し、一元管理する。
-
-```typescript
-// src/game/config.ts
-export const GAME_CONFIG = {
-  player: {
-    maxHp: 80,
-    energyPerTurn: 3,
-    drawPerTurn: 5,
-    maxHandSize: 10,
-  },
-  combat: {
-    vulnerableMultiplier: 1.5,
-    weakMultiplier: 0.75,
-  },
-} as const;
-```
+ゲームバランスに関わる定数（プレイヤーの最大HP・エナジー・ドロー枚数・手札上限、戦闘の各倍率）は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG` に定数として宣言し、一元管理する。本ドキュメントでは数値を重複させず、常に `config.ts` を正とする。
