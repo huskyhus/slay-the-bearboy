@@ -20,5 +20,5 @@ tasks:
     cmd: '{{.COMPOSE}} exec web npm run lint'
   
   install:
-    desc: コンテナ内で npm install を実行 (例: task install -- zustand)
+    desc: コンテナ内で npm install を実行 (例 task install -- zustand)
     cmd: '{{.COMPOSE}} exec web npm install {{.CLI_ARGS}}'
