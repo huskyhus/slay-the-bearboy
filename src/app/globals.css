@@ -24,3 +24,20 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 動きの「振り付け」：透明＆少し下 → 不透明＆定位置（浮かび上がる） */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tailwind v4 に登録すると `animate-fade-in` クラスが使えるようになる */
+@theme {
+  --animate-fade-in: fade-in 300ms ease-out;
+}

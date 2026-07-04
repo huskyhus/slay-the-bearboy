@@ -35,7 +35,7 @@ export default function CardComponent({
       type="button"
       onClick={onSelect}
       disabled={!isPlayable}
-      className={`flex w-32 flex-col rounded-lg border-2 p-3 text-left transition-all ${
+      className={`flex w-32 flex-col rounded-lg border-2 p-3 text-left transition-all animate-fade-in ${
         rarityBg(def.rarity)
       } ${typeColor(def.type)} ${
         isSelected

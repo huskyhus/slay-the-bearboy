@@ -40,7 +40,7 @@ export default function EnemyComponent({ enemy, isTargeting, onTarget }: Props) 
       type="button"
       onClick={onTarget}
       disabled={!isTargeting}
-      className={`flex w-40 flex-col items-center gap-2 rounded-lg border-2 p-4 transition-colors ${
+      className={`flex w-40 flex-col items-center gap-2 rounded-lg border-2 p-4 transition-colors animate-fade-in ${
         isTargeting
           ? "cursor-pointer border-yellow-400 bg-zinc-800 hover:bg-zinc-700"
           : "cursor-default border-zinc-700 bg-zinc-800"
