@@ -1,199 +1,234 @@
 [
-  {
-    "id": "strike",
-    "name": "Strike",
-    "type": "attack",
-    "cost": 1,
-    "rarity": "basic",
-    "effects": [
-      {
-        "type": "damage",
-        "value": 6
-      }
-    ],
-    "description": "Deal 6 damage.",
-    "image": "/stickers_19770123_ハス君シリーズpart1/507134614.png"
-  },
-  {
-    "id": "defend",
-    "name": "Defend",
-    "type": "skill",
-    "cost": 1,
-    "rarity": "basic",
-    "effects": [
-      {
-        "type": "block",
-        "value": 5
-      }
-    ],
-    "description": "Gain 5 Block.",
-    "image": "/stickers_19770123_ハス君シリーズpart1/507134615.png"
-  },
-  {
-    "id": "bash",
-    "name": "Bash",
-    "type": "attack",
-    "cost": 2,
-    "rarity": "basic",
-    "effects": [
-      {
-        "type": "damage",
-        "value": 8
-      },
-      {
-        "type": "apply_vulnerable",
-        "value": 2
-      }
-    ],
-    "description": "Deal 8 damage. Apply 2 Vulnerable.",
-    "image": "/stickers_25609337_ハス君シリ－ズ②/650352750.png"
-  },
-  {
-    "id": "iron_wave",
-    "name": "Iron Wave",
-    "type": "attack",
-    "cost": 1,
-    "rarity": "common",
-    "effects": [
-      {
-        "type": "damage",
-        "value": 5
-      },
-      {
-        "type": "block",
-        "value": 5
-      }
-    ],
-    "description": "Deal 5 damage. Gain 5 Block.",
-    "image": "/stickers_25609337_ハス君シリ－ズ②/650352751.png"
-  },
-  {
-    "id": "cleave",
-    "name": "Cleave",
-    "type": "attack",
-    "cost": 1,
-    "rarity": "common",
-    "effects": [
-      {
-        "type": "damage_all",
-        "value": 8
-      }
-    ],
-    "description": "Deal 8 damage to ALL enemies.",
-    "image": "/stickers_27515398_ハス君といっしょ③/705381865.png"
-  },
-  {
-    "id": "clothesline",
-    "name": "Clothesline",
-    "type": "attack",
-    "cost": 2,
-    "rarity": "common",
-    "effects": [
-      {
-        "type": "damage",
-        "value": 12
-      },
-      {
-        "type": "apply_weak",
-        "value": 2
-      }
-    ],
-    "description": "Deal 12 damage. Apply 2 Weak.",
-    "image": "/stickers_29398042_ハス君シリーズ④/744223937.png"
-  },
-  {
-    "id": "shrug_it_off",
-    "name": "Shrug It Off",
-    "type": "skill",
-    "cost": 1,
-    "rarity": "common",
-    "effects": [
-      {
-        "type": "block",
-        "value": 8
-      },
-      {
-        "type": "draw",
-        "value": 1
-      }
-    ],
-    "description": "Gain 8 Block. Draw 1 card.",
-    "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622433.png"
-  },
-  {
-    "id": "pommel_strike",
-    "name": "Pommel Strike",
-    "type": "attack",
-    "cost": 1,
-    "rarity": "common",
-    "effects": [
-      {
-        "type": "damage",
-        "value": 9
-      },
-      {
-        "type": "draw",
-        "value": 1
-      }
-    ],
-    "description": "Deal 9 damage. Draw 1 card.",
-    "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875953.png"
-  },
-  {
-    "id": "uppercut",
-    "name": "Uppercut",
-    "type": "attack",
-    "cost": 2,
-    "rarity": "uncommon",
-    "effects": [
-      {
-        "type": "damage",
-        "value": 13
-      },
-      {
-        "type": "apply_weak",
-        "value": 1
-      },
-      {
-        "type": "apply_vulnerable",
-        "value": 1
-      }
-    ],
-    "description": "Deal 13 damage. Apply 1 Weak. Apply 1 Vulnerable.",
-    "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167801.png"
-  },
-  {
-    "id": "battle_trance",
-    "name": "Battle Trance",
-    "type": "skill",
-    "cost": 0,
-    "rarity": "uncommon",
-    "effects": [
-      {
-        "type": "draw",
-        "value": 3
-      }
-    ],
-    "description": "Draw 3 cards.",
-    "image": "/stickers_33038748_ハスくんと仲間たち/820777873.png"
-  },
-  {
-    "id": "thunderclap",
-    "name": "Thunderclap",
-    "type": "attack",
-    "cost": 1,
-    "rarity": "common",
-    "effects": [
-      {
-        "type": "damage_all",
-        "value": 4
-      },
-      {
-        "type": "apply_vulnerable",
-        "value": 1
-      }
-    ],
-    "description": "Deal 4 damage to ALL enemies. Apply 1 Vulnerable.",
-    "image": "/stickers_34202299_ハス君といっしょpart.7/847773233.png"
-  }
+  { "id": "s507134614", "name": "了解！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134614.png" },
+  { "id": "s507134615", "name": "感謝してるよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134615.png" },
+  { "id": "s507134616", "name": "ありがとう", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134616.png" },
+  { "id": "s507134617", "name": "Hi", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134617.png" },
+  { "id": "s507134618", "name": "こんにちは", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_19770123_ハス君シリーズpart1/507134618.png" },
+  { "id": "s507134619", "name": "お腹すいたよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134619.png" },
+  { "id": "s507134620", "name": "疲れたよぅ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134620.png" },
+  { "id": "s507134621", "name": "さびしいなぁ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134621.png" },
+  { "id": "s507134622", "name": "帰って来てね", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134622.png" },
+  { "id": "s507134623", "name": "待ち切れないよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134623.png" },
+  { "id": "s507134624", "name": "待ってるよ遊ぼうよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134624.png" },
+  { "id": "s507134625", "name": "ガーン！落ち込むよぅ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134625.png" },
+  { "id": "s507134626", "name": "もうひと踏ん張り", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_19770123_ハス君シリーズpart1/507134626.png" },
+  { "id": "s507134627", "name": "元気にしてるょ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134627.png" },
+  { "id": "s507134628", "name": "おはよー", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_19770123_ハス君シリーズpart1/507134628.png" },
+  { "id": "s507134629", "name": "おやすみなさい", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_19770123_ハス君シリーズpart1/507134629.png" },
+  { "id": "s650352750", "name": "了解", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352750.png" },
+  { "id": "s650352751", "name": "Hello!", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352751.png" },
+  { "id": "s650352752", "name": "元気？Hello!", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352752.png" },
+  { "id": "s650352753", "name": "ありがとう", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352753.png" },
+  { "id": "s650352754", "name": "忘れないで！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352754.png" },
+  { "id": "s650352755", "name": "まっているよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352755.png" },
+  { "id": "s650352756", "name": "おやすみなさい", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352756.png" },
+  { "id": "s650352757", "name": "お疲れさまです", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352757.png" },
+  { "id": "s650352758", "name": "お腹すいたよー", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352758.png" },
+  { "id": "s650352759", "name": "くたくたです", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352759.png" },
+  { "id": "s650352760", "name": "感謝しています", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352760.png" },
+  { "id": "s650352761", "name": "Happy Birthday", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352761.png" },
+  { "id": "s650352762", "name": "心にゆとりを・・・", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352762.png" },
+  { "id": "s650352763", "name": "会いたいなぁ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352763.png" },
+  { "id": "s650352764", "name": "あせるな！ 立ち止まれ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352764.png" },
+  { "id": "s650352765", "name": "がんばるんば", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_25609337_ハス君シリ－ズ②/650352765.png" },
+  { "id": "s705381865", "name": "OK!", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_27515398_ハス君といっしょ③/705381865.png" },
+  { "id": "s705381866", "name": "よろしくお願いします！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_27515398_ハス君といっしょ③/705381866.png" },
+  { "id": "s705381867", "name": "金くれ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_27515398_ハス君といっしょ③/705381867.png" },
+  { "id": "s705381868", "name": "拝啓お元気ですか", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381868.png" },
+  { "id": "s705381869", "name": "お体にはお気を付けください敬具", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381869.png" },
+  { "id": "s705381870", "name": "助けて～", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381870.png" },
+  { "id": "s705381871", "name": "今助けるぅ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_27515398_ハス君といっしょ③/705381871.png" },
+  { "id": "s705381872", "name": "Congrats!", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381872.png" },
+  { "id": "s705381873", "name": "ラジャ！！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_27515398_ハス君といっしょ③/705381873.png" },
+  { "id": "s705381874", "name": "それな", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_27515398_ハス君といっしょ③/705381874.png" },
+  { "id": "s705381875", "name": "おやすみ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381875.png" },
+  { "id": "s705381876", "name": "会社を辞めて起業する", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381876.png" },
+  { "id": "s705381877", "name": "賛成！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381877.png" },
+  { "id": "s705381878", "name": "異議（いぎ）あり！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_27515398_ハス君といっしょ③/705381878.png" },
+  { "id": "s705381879", "name": "「昇天」チーン", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381879.png" },
+  { "id": "s705381880", "name": "耐えるよ耐えるよ！！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_27515398_ハス君といっしょ③/705381880.png" },
+  { "id": "s744223937", "name": "おまえもな！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_29398042_ハス君シリーズ④/744223937.png" },
+  { "id": "s744223938", "name": "忘れるなよ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_29398042_ハス君シリーズ④/744223938.png" },
+  { "id": "s744223939", "name": "やっちまった！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223939.png" },
+  { "id": "s744223940", "name": "すまん 猛省している！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223940.png" },
+  { "id": "s744223941", "name": "ありがたさ痛感！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223941.png" },
+  { "id": "s744223942", "name": "感  動  !", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223942.png" },
+  { "id": "s744223943", "name": "母は偉大なり！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223943.png" },
+  { "id": "s744223944", "name": "父は森！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223944.png" },
+  { "id": "s744223945", "name": "めざせ規則生活！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223945.png" },
+  { "id": "s744223946", "name": "感謝しかない！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223946.png" },
+  { "id": "s744223947", "name": "おのれの愚かさ今知る！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223947.png" },
+  { "id": "s744223948", "name": "座禅する！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223948.png" },
+  { "id": "s744223949", "name": "欲望よさらば", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223949.png" },
+  { "id": "s744223950", "name": "地の獄！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_29398042_ハス君シリーズ④/744223950.png" },
+  { "id": "s744223951", "name": "逆転劇", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_29398042_ハス君シリーズ④/744223951.png" },
+  { "id": "s744223952", "name": "ごめんなさい...", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223952.png" },
+  { "id": "s744223953", "name": "すみません✨", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223953.png" },
+  { "id": "s744223954", "name": "不可能です！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223954.png" },
+  { "id": "s744223955", "name": "人は欲望と共にある", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223955.png" },
+  { "id": "s744223956", "name": "寝る子は育つ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223956.png" },
+  { "id": "s744223957", "name": "働け！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_29398042_ハス君シリーズ④/744223957.png" },
+  { "id": "s744223958", "name": "今日はチートデイ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_29398042_ハス君シリーズ④/744223958.png" },
+  { "id": "s744223959", "name": "準備完了！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_29398042_ハス君シリーズ④/744223959.png" },
+  { "id": "s744223960", "name": "時は満ちた", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_29398042_ハス君シリーズ④/744223960.png" },
+  { "id": "s772622433", "name": "波乗りぃ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622433.png" },
+  { "id": "s772622434", "name": "NICE TRY!", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622434.png" },
+  { "id": "s772622435", "name": "いいポエムだね", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622435.png" },
+  { "id": "s772622436", "name": "徳川埋蔵金", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622436.png" },
+  { "id": "s772622437", "name": "主役登場！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622437.png" },
+  { "id": "s772622438", "name": "全員集合！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622438.png" },
+  { "id": "s772622439", "name": "レッツダンス", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622439.png" },
+  { "id": "s772622440", "name": "行け わがしもべたち", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622440.png" },
+  { "id": "s772622441", "name": "誇れ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622441.png" },
+  { "id": "s772622442", "name": "ご招待", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622442.png" },
+  { "id": "s772622443", "name": "招かれざる客", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622443.png" },
+  { "id": "s772622444", "name": "壊れる…", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622444.png" },
+  { "id": "s772622445", "name": "壊す ﾆﾔﾘ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622445.png" },
+  { "id": "s772622446", "name": "美味！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622446.png" },
+  { "id": "s772622447", "name": "まかせろ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622447.png" },
+  { "id": "s772622448", "name": "cool down!", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622448.png" },
+  { "id": "s772622449", "name": "必ず回復する！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622449.png" },
+  { "id": "s772622450", "name": "大丈夫だよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622450.png" },
+  { "id": "s772622451", "name": "ねむいよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622451.png" },
+  { "id": "s772622452", "name": "おはよう", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622452.png" },
+  { "id": "s772622453", "name": "まかせろ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622453.png" },
+  { "id": "s772622454", "name": "大丈夫だよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622454.png" },
+  { "id": "s772622455", "name": "キャリアをつめ スキルを磨け", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622455.png" },
+  { "id": "s772622456", "name": "規則正しい生活", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622456.png" },
+  { "id": "s772622457", "name": "寂しいな 会いたいな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622457.png" },
+  { "id": "s772622458", "name": "遊びにおいでよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622458.png" },
+  { "id": "s772622459", "name": "それ、受けねぇ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622459.png" },
+  { "id": "s772622460", "name": "語学は大事だ ABC XYZ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622460.png" },
+  { "id": "s772622461", "name": "いつもありがとうございます 感謝しています", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622461.png" },
+  { "id": "s772622462", "name": "了解", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622462.png" },
+  { "id": "s772622463", "name": "話し聞くよ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622463.png" },
+  { "id": "s772622464", "name": "野菜ジュース飲んだ？", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_30609727_いつもいっしょ！パ－ト(1)/772622464.png" },
+  { "id": "s786875953", "name": "Hi!", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875953.png" },
+  { "id": "s786875954", "name": "大丈夫だ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875954.png" },
+  { "id": "s786875955", "name": "オラもうだめだ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875955.png" },
+  { "id": "s786875956", "name": "やる気倍増！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875956.png" },
+  { "id": "s786875957", "name": "協調大事！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875957.png" },
+  { "id": "s786875958", "name": "ここだけの話", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875958.png" },
+  { "id": "s786875959", "name": "ごちそうさま", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875959.png" },
+  { "id": "s786875960", "name": "勤勉でいこう！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875960.png" },
+  { "id": "s786875961", "name": "オレについて来い", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875961.png" },
+  { "id": "s786875962", "name": "お腹すいた！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875962.png" },
+  { "id": "s786875963", "name": "合体", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875963.png" },
+  { "id": "s786875964", "name": "喝！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875964.png" },
+  { "id": "s786875965", "name": "目がまわる～", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875965.png" },
+  { "id": "s786875966", "name": "ご名答", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875966.png" },
+  { "id": "s786875967", "name": "美しい", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875967.png" },
+  { "id": "s786875968", "name": "俺のことは置いていけ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875968.png" },
+  { "id": "s786875969", "name": "？", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875969.png" },
+  { "id": "s786875970", "name": "ありがとう！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875970.png" },
+  { "id": "s786875971", "name": "体調不良（だめだ～）", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875971.png" },
+  { "id": "s786875972", "name": "会いたいなぁ～（かわちい）", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875972.png" },
+  { "id": "s786875973", "name": "日々の積み重ね", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875973.png" },
+  { "id": "s786875974", "name": "どんでん返し", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875974.png" },
+  { "id": "s786875975", "name": "ごまかすな！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875975.png" },
+  { "id": "s786875976", "name": "おやすみなさい", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31398403_ハス君シリ－ズ⑤/786875976.png" },
+  { "id": "s796167801", "name": "3匹寄らば文殊の知恵", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167801.png" },
+  { "id": "s796167802", "name": "出る杭は打たれない", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167802.png" },
+  { "id": "s796167803", "name": "灯台もと暗し", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167803.png" },
+  { "id": "s796167804", "name": "バディは宝", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167804.png" },
+  { "id": "s796167805", "name": "打倒！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167805.png" },
+  { "id": "s796167806", "name": "腹ぺこ隊", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167806.png" },
+  { "id": "s796167807", "name": "体幹大事", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167807.png" },
+  { "id": "s796167808", "name": "熟考せよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167808.png" },
+  { "id": "s796167809", "name": "羨ましいなぁ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167809.png" },
+  { "id": "s796167810", "name": "不安になるなよ！大丈夫", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167810.png" },
+  { "id": "s796167811", "name": "料理男子！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167811.png" },
+  { "id": "s796167812", "name": "下落しないと上昇しない！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167812.png" },
+  { "id": "s796167813", "name": "焦ることはない！暴落を待て！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167813.png" },
+  { "id": "s796167814", "name": "稼げ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167814.png" },
+  { "id": "s796167815", "name": "暴落が来る！キャッシュを準備せよ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167815.png" },
+  { "id": "s796167816", "name": "もしもーし！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167816.png" },
+  { "id": "s796167817", "name": "花を贈るよ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167817.png" },
+  { "id": "s796167818", "name": "遊びにおいで待ってるよ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167818.png" },
+  { "id": "s796167819", "name": "フルーツ食べよう！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167819.png" },
+  { "id": "s796167820", "name": "チルタイム！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167820.png" },
+  { "id": "s796167821", "name": "偽りの人生はごめんだ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167821.png" },
+  { "id": "s796167822", "name": "ビタミン取れよ！乾燥注意！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167822.png" },
+  { "id": "s796167823", "name": "ヤバい", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167823.png" },
+  { "id": "s796167824", "name": "大志を抱け！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167824.png" },
+  { "id": "s796167825", "name": "いいなぁ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167825.png" },
+  { "id": "s796167826", "name": "頭を冷やせ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167826.png" },
+  { "id": "s796167827", "name": "親の言うことには一理ある", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167827.png" },
+  { "id": "s796167828", "name": "いつも感謝！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167828.png" },
+  { "id": "s796167829", "name": "ストレッチ！ストレッチ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167829.png" },
+  { "id": "s796167830", "name": "危機管理せよ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167830.png" },
+  { "id": "s796167831", "name": "自分のオリジナリティは何だ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167831.png" },
+  { "id": "s796167832", "name": "寛容であれ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_31920306_ハス君シリ－ズ{6}/796167832.png" },
+  { "id": "s820777873", "name": "それは健全なのか", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777873.png" },
+  { "id": "s820777874", "name": "迎合するな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777874.png" },
+  { "id": "s820777875", "name": "無理に納得するな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777875.png" },
+  { "id": "s820777876", "name": "それで本当に後悔しないか？", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777876.png" },
+  { "id": "s820777877", "name": "もっと攻めろ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_33038748_ハスくんと仲間たち/820777877.png" },
+  { "id": "s820777878", "name": "まだ主戦場ではない", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777878.png" },
+  { "id": "s820777879", "name": "ダイナミックに！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_33038748_ハスくんと仲間たち/820777879.png" },
+  { "id": "s820777880", "name": "荒波にもまれてこい！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_33038748_ハスくんと仲間たち/820777880.png" },
+  { "id": "s820777881", "name": "期待先行や", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777881.png" },
+  { "id": "s820777882", "name": "迷う人は対象外", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_33038748_ハスくんと仲間たち/820777882.png" },
+  { "id": "s820777883", "name": "感情で動くな 設計で動け", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777883.png" },
+  { "id": "s820777884", "name": "とんだ誤解", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777884.png" },
+  { "id": "s820777885", "name": "大幅下方修正", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777885.png" },
+  { "id": "s820777886", "name": "デブリ除去", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_33038748_ハスくんと仲間たち/820777886.png" },
+  { "id": "s820777887", "name": "静かで成熟したしくみ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777887.png" },
+  { "id": "s820777888", "name": "終わりではない！通過儀礼だ！！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_33038748_ハスくんと仲間たち/820777888.png" },
+  { "id": "s820777889", "name": "観測狼に徹せよ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777889.png" },
+  { "id": "s820777890", "name": "……じー", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777890.png" },
+  { "id": "s820777891", "name": "冷静に整理しよう", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777891.png" },
+  { "id": "s820777892", "name": "偉いわけじゃない 劣っているわけでもない", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777892.png" },
+  { "id": "s820777893", "name": "文句のつけようがない", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777893.png" },
+  { "id": "s820777894", "name": "光が見えて来た", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777894.png" },
+  { "id": "s820777895", "name": "めでたい！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777895.png" },
+  { "id": "s820777896", "name": "甘えていいんだよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777896.png" },
+  { "id": "s820777897", "name": "ご乱心", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_33038748_ハスくんと仲間たち/820777897.png" },
+  { "id": "s820777898", "name": "おはよう", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777898.png" },
+  { "id": "s820777899", "name": "おはようございます", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777899.png" },
+  { "id": "s820777900", "name": "こんにちは", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777900.png" },
+  { "id": "s820777901", "name": "いい気分だな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777901.png" },
+  { "id": "s820777902", "name": "お茶しよう", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777902.png" },
+  { "id": "s820777903", "name": "遊ぼうよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777903.png" },
+  { "id": "s820777904", "name": "がんばろう", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777904.png" },
+  { "id": "s820777905", "name": "きっとできるよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777905.png" },
+  { "id": "s820777906", "name": "ためしてみよう", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777906.png" },
+  { "id": "s820777907", "name": "むずかしいな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777907.png" },
+  { "id": "s820777908", "name": "寂しいな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777908.png" },
+  { "id": "s820777909", "name": "どうしてるかなぁ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777909.png" },
+  { "id": "s820777910", "name": "旅、行きたいな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777910.png" },
+  { "id": "s820777911", "name": "大丈夫だよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777911.png" },
+  { "id": "s820777912", "name": "見守るよ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_33038748_ハスくんと仲間たち/820777912.png" },
+  { "id": "s847773233", "name": "あまりに無力な存在", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773233.png" },
+  { "id": "s847773234", "name": "朝日が光を放つ はい！ おはよう", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773234.png" },
+  { "id": "s847773235", "name": "さあ旅立とう！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773235.png" },
+  { "id": "s847773236", "name": "ありがとう！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773236.png" },
+  { "id": "s847773237", "name": "やぁ", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773237.png" },
+  { "id": "s847773238", "name": "一人では生きてはいけない 感謝", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773238.png" },
+  { "id": "s847773239", "name": "限界へ挑戦", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773239.png" },
+  { "id": "s847773240", "name": "成長率8%", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773240.png" },
+  { "id": "s847773241", "name": "俯瞰せよ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773241.png" },
+  { "id": "s847773242", "name": "まかせろ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773242.png" },
+  { "id": "s847773243", "name": "お言葉をきこう！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773243.png" },
+  { "id": "s847773244", "name": "連携プレー", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773244.png" },
+  { "id": "s847773245", "name": "地獄で仏", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773245.png" },
+  { "id": "s847773246", "name": "一触即発！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773246.png" },
+  { "id": "s847773247", "name": "おぬし ワルだな", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773247.png" },
+  { "id": "s847773248", "name": "出来る時に親孝行はしとけ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773248.png" },
+  { "id": "s847773249", "name": "作戦会議だ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773249.png" },
+  { "id": "s847773250", "name": "成敗いたす！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773250.png" },
+  { "id": "s847773251", "name": "寄り添う寄り添うよ！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773251.png" },
+  { "id": "s847773252", "name": "夢で会いましょう！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773252.png" },
+  { "id": "s847773253", "name": "頭を冷やせ 深呼吸", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773253.png" },
+  { "id": "s847773254", "name": "自分を守るのは、自分しかいない！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773254.png" },
+  { "id": "s847773255", "name": "今日も一日（頑張りました）", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773255.png" },
+  { "id": "s847773256", "name": "孤独だな", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773256.png" },
+  { "id": "s847773257", "name": "物価高すぎる！", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773257.png" },
+  { "id": "s847773258", "name": "豆腐メンタル", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773258.png" },
+  { "id": "s847773259", "name": "くさるな", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773259.png" },
+  { "id": "s847773260", "name": "ざわわざわわざわわざわわ", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773260.png" },
+  { "id": "s847773261", "name": "投げるな！感情はすてろ！", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773261.png" },
+  { "id": "s847773262", "name": "なくしものはないですか？", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773262.png" },
+  { "id": "s847773263", "name": "きょうは、心をほどく日", "type": "skill", "cost": 1, "rarity": "common", "effects": [{ "type": "block", "value": 5 }], "description": "5ブロックを得る。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773263.png" },
+  { "id": "s847773264", "name": "Checkmate!", "type": "attack", "cost": 1, "rarity": "common", "effects": [{ "type": "damage", "value": 6 }], "description": "6ダメージを与える。", "image": "/stickers_34202299_ハス君といっしょpart.7/847773264.png" }
 ]
