@@ -75,16 +75,17 @@ function applyEnemyStatusEffect(
 
 export function calculateDamage(
   baseDamage: number,
-  attackerWeak: number,
-  defenderVulnerable: number,
+  attacker: StatusEffects,
+  defender: StatusEffects,
 ): number {
-  const { weakMultiplier, vulnerableMultiplier } = GAME_CONFIG.combat;
   let damage = baseDamage;
-  if (attackerWeak > 0) {
-    damage = Math.floor(damage * weakMultiplier);
-  }
-  if (defenderVulnerable > 0) {
-    damage = Math.floor(damage * vulnerableMultiplier);
+  for (const key of STATUS_EFFECT_KEYS) {
+    const multiplier = STATUS_EFFECT_DEFINITIONS[key].damageMultiplier;
+    if (!multiplier) continue;
+    const effects = multiplier.role === "attacker" ? attacker : defender;
+    if (effects[key] > 0) {
+      damage = Math.floor(damage * multiplier.value);
+    }
   }
   return damage;
 }
@@ -228,22 +229,22 @@ function applyEffect(
   switch (effect.type) {
     case "damage": {
       if (!targetEnemyId) return state;
-      const damage = calculateDamage(
+      return applyDamageToEnemy(
+        state,
+        targetEnemyId,
         effect.value,
-        state.player.statusEffects.weak,
-        0,
+        state.player.statusEffects,
       );
-      return applyDamageToEnemy(state, targetEnemyId, damage);
     }
     case "damage_all": {
       let s = state;
       for (const enemy of s.enemies) {
-        const damage = calculateDamage(
+        s = applyDamageToEnemy(
+          s,
+          enemy.id,
           effect.value,
-          s.player.statusEffects.weak,
-          0,
+          s.player.statusEffects,
         );
-        s = applyDamageToEnemy(s, enemy.id, damage);
       }
       return s;
     }
@@ -279,6 +280,7 @@ function applyDamageToEnemy(
   state: CombatState,
   enemyId: string,
   baseDamage: number,
+  attacker: StatusEffects,
 ): CombatState {
   return {
     ...state,
@@ -286,8 +288,8 @@ function applyDamageToEnemy(
       if (e.id !== enemyId) return e;
       const finalDamage = calculateDamage(
         baseDamage,
-        0,
-        e.statusEffects.vulnerable,
+        attacker,
+        e.statusEffects,
       );
       const result = applyDamageToTarget(e, finalDamage);
       return { ...e, hp: result.hp, block: result.block };
@@ -333,8 +335,8 @@ export function executeEnemyTurn(
       case "attack": {
         const damage = calculateDamage(
           intent.damage,
-          enemy.statusEffects.weak,
-          player.statusEffects.vulnerable,
+          enemy.statusEffects,
+          player.statusEffects,
         );
         const result = applyDamageToTarget(player, damage);
         player = { ...player, hp: result.hp, block: result.block };
