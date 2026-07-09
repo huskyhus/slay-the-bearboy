@@ -2,6 +2,7 @@ import { GAME_CONFIG } from "./config";
 import { STATUS_EFFECT_DEFINITIONS, STATUS_EFFECT_KEYS } from "./statusEffects";
 import type {
   CardDefinition,
+  CardEffect,
   CardInstance,
   CombatState,
   EnemyDefinition,
@@ -223,7 +224,7 @@ export function playCard(
 
 function applyEffect(
   state: CombatState,
-  effect: { type: string; value: number },
+  effect: CardEffect,
   targetEnemyId: string | null,
 ): CombatState {
   switch (effect.type) {
@@ -257,16 +258,14 @@ function applyEffect(
         },
       };
     }
-    case "apply_vulnerable": {
+    case "apply_status": {
+      if (!effect.status) return state;
       return applyEnemyStatusEffect(
         state,
         targetEnemyId,
-        "vulnerable",
+        effect.status,
         effect.value,
       );
-    }
-    case "apply_weak": {
-      return applyEnemyStatusEffect(state, targetEnemyId, "weak", effect.value);
     }
     case "draw": {
       return drawCards(state, effect.value);
@@ -419,10 +418,7 @@ export function executeEnemyTurn(
 
 export function needsTarget(def: CardDefinition): boolean {
   return def.effects.some(
-    (e) =>
-      e.type === "damage" ||
-      e.type === "apply_vulnerable" ||
-      e.type === "apply_weak",
+    (e) => e.type === "damage" || e.type === "apply_status",
   );
 }
 

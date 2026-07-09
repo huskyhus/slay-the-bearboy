@@ -4,16 +4,12 @@ export type CardType = "attack" | "skill";
 export type CardRarity = "basic" | "common" | "uncommon";
 
 export type EffectType =
-  | "damage"
-  | "damage_all"
-  | "block"
-  | "apply_vulnerable"
-  | "apply_weak"
-  | "draw";
+  "damage" | "damage_all" | "block" | "apply_status" | "draw";
 
 export interface CardEffect {
   type: EffectType;
   value: number;
+  status?: StatusEffectKey; // type === "apply_status" のときのみ使用
 }
 
 export interface CardDefinition {
