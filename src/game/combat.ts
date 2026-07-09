@@ -1,4 +1,5 @@
 import { GAME_CONFIG } from "./config";
+import { STATUS_EFFECT_DEFINITIONS, STATUS_EFFECT_KEYS } from "./statusEffects";
 import type {
   CardDefinition,
   CardInstance,
@@ -31,14 +32,21 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 function createStatusEffects(): StatusEffects {
-  return { vulnerable: 0, weak: 0 };
+  const effects = {} as StatusEffects;
+  for (const key of STATUS_EFFECT_KEYS) {
+    effects[key] = 0;
+  }
+  return effects;
 }
 
 function tickStatusEffects(effects: StatusEffects): StatusEffects {
-  return {
-    vulnerable: Math.max(0, effects.vulnerable - 1),
-    weak: Math.max(0, effects.weak - 1),
-  };
+  const result = { ...effects };
+  for (const key of STATUS_EFFECT_KEYS) {
+    if (STATUS_EFFECT_DEFINITIONS[key].decaysPerTurn) {
+      result[key] = Math.max(0, result[key] - 1);
+    }
+  }
+  return result;
 }
 
 function applyEnemyStatusEffect(
@@ -249,7 +257,12 @@ function applyEffect(
       };
     }
     case "apply_vulnerable": {
-      return applyEnemyStatusEffect(state, targetEnemyId, "vulnerable", effect.value);
+      return applyEnemyStatusEffect(
+        state,
+        targetEnemyId,
+        "vulnerable",
+        effect.value,
+      );
     }
     case "apply_weak": {
       return applyEnemyStatusEffect(state, targetEnemyId, "weak", effect.value);

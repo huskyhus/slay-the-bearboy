@@ -56,6 +56,8 @@ export interface StatusEffects {
   weak: number;
 }
 
+export type StatusEffectKey = keyof StatusEffects;
+
 export interface PlayerState {
   hp: number;
   maxHp: number;
