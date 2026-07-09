@@ -1,6 +1,8 @@
 "use client";
 
+import { STATUS_EFFECT_DEFINITIONS } from "@/game/statusEffects";
 import type { EnemyState } from "@/game/types";
+import StatusEffectBadges from "./StatusEffectBadges";
 
 interface Props {
   enemy: EnemyState;
@@ -15,7 +17,7 @@ function intentLabel(intent: EnemyState["currentIntent"]): string {
     case "defend":
       return `Defend ${intent.block}`;
     case "debuff":
-      return `${intent.effect === "weak" ? "Weak" : "Vulnerable"} ${intent.value}`;
+      return `${STATUS_EFFECT_DEFINITIONS[intent.effect].label} ${intent.value}`;
   }
 }
 
@@ -32,7 +34,11 @@ function intentColor(type: string): string {
   }
 }
 
-export default function EnemyComponent({ enemy, isTargeting, onTarget }: Props) {
+export default function EnemyComponent({
+  enemy,
+  isTargeting,
+  onTarget,
+}: Props) {
   const hpPercent = Math.max(0, (enemy.hp / enemy.maxHp) * 100);
 
   return (
@@ -68,16 +74,10 @@ export default function EnemyComponent({ enemy, isTargeting, onTarget }: Props) 
 
       {/* Status effects */}
       <div className="flex gap-1 text-xs">
-        {enemy.statusEffects.vulnerable > 0 && (
-          <span className="rounded bg-orange-900 px-1 py-0.5 text-orange-300">
-            Vul {enemy.statusEffects.vulnerable}
-          </span>
-        )}
-        {enemy.statusEffects.weak > 0 && (
-          <span className="rounded bg-green-900 px-1 py-0.5 text-green-300">
-            Wk {enemy.statusEffects.weak}
-          </span>
-        )}
+        <StatusEffectBadges
+          statusEffects={enemy.statusEffects}
+          variant="short"
+        />
       </div>
 
       {/* Intent */}
