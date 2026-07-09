@@ -41,6 +41,28 @@ function tickStatusEffects(effects: StatusEffects): StatusEffects {
   };
 }
 
+function applyEnemyStatusEffect(
+  state: CombatState,
+  targetEnemyId: string | null,
+  key: keyof StatusEffects,
+  value: number,
+): CombatState {
+  return {
+    ...state,
+    enemies: state.enemies.map((e) =>
+      !targetEnemyId || e.id === targetEnemyId
+        ? {
+            ...e,
+            statusEffects: {
+              ...e.statusEffects,
+              [key]: e.statusEffects[key] + value,
+            },
+          }
+        : e,
+    ),
+  };
+}
+
 // --- Damage Calculation ---
 
 export function calculateDamage(
@@ -145,9 +167,7 @@ export function canPlayCard(
   state: CombatState,
   cardDef: CardDefinition,
 ): boolean {
-  return (
-    state.phase === "player_turn" && state.player.energy >= cardDef.cost
-  );
+  return state.phase === "player_turn" && state.player.energy >= cardDef.cost;
 }
 
 export function playCard(
@@ -229,61 +249,10 @@ function applyEffect(
       };
     }
     case "apply_vulnerable": {
-      if (!targetEnemyId) {
-        // Apply to all enemies for damage_all cards
-        return {
-          ...state,
-          enemies: state.enemies.map((e) => ({
-            ...e,
-            statusEffects: {
-              ...e.statusEffects,
-              vulnerable: e.statusEffects.vulnerable + effect.value,
-            },
-          })),
-        };
-      }
-      return {
-        ...state,
-        enemies: state.enemies.map((e) =>
-          e.id === targetEnemyId
-            ? {
-                ...e,
-                statusEffects: {
-                  ...e.statusEffects,
-                  vulnerable: e.statusEffects.vulnerable + effect.value,
-                },
-              }
-            : e,
-        ),
-      };
+      return applyEnemyStatusEffect(state, targetEnemyId, "vulnerable", effect.value);
     }
     case "apply_weak": {
-      if (!targetEnemyId) {
-        return {
-          ...state,
-          enemies: state.enemies.map((e) => ({
-            ...e,
-            statusEffects: {
-              ...e.statusEffects,
-              weak: e.statusEffects.weak + effect.value,
-            },
-          })),
-        };
-      }
-      return {
-        ...state,
-        enemies: state.enemies.map((e) =>
-          e.id === targetEnemyId
-            ? {
-                ...e,
-                statusEffects: {
-                  ...e.statusEffects,
-                  weak: e.statusEffects.weak + effect.value,
-                },
-              }
-            : e,
-        ),
-      };
+      return applyEnemyStatusEffect(state, targetEnemyId, "weak", effect.value);
     }
     case "draw": {
       return drawCards(state, effect.value);
