@@ -76,8 +76,7 @@ HP減少     = 実ダメージ
 | `damage` | 単体ダメージ |
 | `damage_all` | 全体ダメージ |
 | `block` | ブロック付与（自分） |
-| `apply_vulnerable` | 脆弱付与 |
-| `apply_weak` | 弱体付与 |
+| `apply_status` | ステータス効果付与（`status` フィールドで対象キーを指定。例: `vulnerable`, `weak`） |
 | `draw` | カードドロー |
 
 ### 2.3 カード一覧
