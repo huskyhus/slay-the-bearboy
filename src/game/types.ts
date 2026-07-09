@@ -36,7 +36,7 @@ export type EnemyIntentType = "attack" | "defend" | "debuff";
 export type EnemyIntent =
   | { type: "attack"; damage: number }
   | { type: "defend"; block: number }
-  | { type: "debuff"; effect: "weak" | "vulnerable"; value: number };
+  | { type: "debuff"; effect: StatusEffectKey; value: number };
 
 export interface EnemyDefinition {
   id: string;

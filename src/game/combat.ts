@@ -8,6 +8,7 @@ import type {
   EnemyDefinition,
   EnemyState,
   PlayerState,
+  StatusEffectKey,
   StatusEffects,
 } from "./types";
 
@@ -50,10 +51,18 @@ function tickStatusEffects(effects: StatusEffects): StatusEffects {
   return result;
 }
 
+function applyStatusEffect(
+  effects: StatusEffects,
+  key: StatusEffectKey,
+  value: number,
+): StatusEffects {
+  return { ...effects, [key]: effects[key] + value };
+}
+
 function applyEnemyStatusEffect(
   state: CombatState,
   targetEnemyId: string | null,
-  key: keyof StatusEffects,
+  key: StatusEffectKey,
   value: number,
 ): CombatState {
   return {
@@ -62,10 +71,7 @@ function applyEnemyStatusEffect(
       !targetEnemyId || e.id === targetEnemyId
         ? {
             ...e,
-            statusEffects: {
-              ...e.statusEffects,
-              [key]: e.statusEffects[key] + value,
-            },
+            statusEffects: applyStatusEffect(e.statusEffects, key, value),
           }
         : e,
     ),
@@ -346,23 +352,14 @@ export function executeEnemyTurn(
         break;
       }
       case "debuff": {
-        if (intent.effect === "weak") {
-          player = {
-            ...player,
-            statusEffects: {
-              ...player.statusEffects,
-              weak: player.statusEffects.weak + intent.value,
-            },
-          };
-        } else if (intent.effect === "vulnerable") {
-          player = {
-            ...player,
-            statusEffects: {
-              ...player.statusEffects,
-              vulnerable: player.statusEffects.vulnerable + intent.value,
-            },
-          };
-        }
+        player = {
+          ...player,
+          statusEffects: applyStatusEffect(
+            player.statusEffects,
+            intent.effect,
+            intent.value,
+          ),
+        };
         break;
       }
     }
