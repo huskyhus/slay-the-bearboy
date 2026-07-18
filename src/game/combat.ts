@@ -1,5 +1,5 @@
 import { GAME_CONFIG } from "./config";
-import { CONDITION_DEFINITIONS, CONDITION_KEYS } from "./conditions";
+import { CONDITION_DEFINITIONS } from "./conditions";
 import type {
   CardDefinition,
   CardInstance,
@@ -34,18 +34,14 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 function createConditionState(): ConditionState {
-  const effects = {} as ConditionState;
-  for (const key of CONDITION_KEYS) {
-    effects[key] = 0;
-  }
-  return effects;
+  return { vulnerable: 0, weak: 0 };
 }
 
 function tickConditionState(effects: ConditionState): ConditionState {
   const result = { ...effects };
-  for (const key of CONDITION_KEYS) {
-    if (CONDITION_DEFINITIONS[key].decaysPerTurn) {
-      result[key] = Math.max(0, result[key] - 1);
+  for (const def of Object.values(CONDITION_DEFINITIONS)) {
+    if (def.decaysPerTurn) {
+      result[def.key] = Math.max(0, result[def.key] - 1);
     }
   }
   return result;
@@ -86,11 +82,11 @@ export function calculateDamage(
   defender: ConditionState,
 ): number {
   let damage = baseDamage;
-  for (const key of CONDITION_KEYS) {
-    const multiplier = CONDITION_DEFINITIONS[key].damageMultiplier;
+  for (const def of Object.values(CONDITION_DEFINITIONS)) {
+    const multiplier = def.damageMultiplier;
     if (!multiplier) continue;
     const effects = multiplier.role === "attacker" ? attacker : defender;
-    if (effects[key] > 0) {
+    if (effects[def.key] > 0) {
       damage = Math.floor(damage * multiplier.value);
     }
   }

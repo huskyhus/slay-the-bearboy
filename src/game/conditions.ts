@@ -37,9 +37,3 @@ export const CONDITION_DEFINITIONS: Record<
     },
   },
 };
-
-// CONDITION_DEFINITIONS は Record<ConditionType, ...> 型なので、
-// ConditionType の全キーを持つことが型で保証されている。
-export const CONDITION_KEYS = Object.keys(
-  CONDITION_DEFINITIONS,
-) as ConditionType[];
