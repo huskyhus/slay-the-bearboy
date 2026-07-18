@@ -1,8 +1,8 @@
 "use client";
 
-import { STATUS_EFFECT_DEFINITIONS } from "@/game/statusEffects";
+import { CONDITION_DEFINITIONS } from "@/game/conditions";
 import type { EnemyState } from "@/game/types";
-import StatusEffectBadges from "./StatusEffectBadges";
+import ConditionBadges from "./ConditionBadges";
 
 interface Props {
   enemy: EnemyState;
@@ -17,7 +17,7 @@ function intentLabel(intent: EnemyState["currentIntent"]): string {
     case "defend":
       return `Defend ${intent.block}`;
     case "debuff":
-      return `${STATUS_EFFECT_DEFINITIONS[intent.effect].label} ${intent.value}`;
+      return `${CONDITION_DEFINITIONS[intent.effect].label} ${intent.value}`;
   }
 }
 
@@ -72,10 +72,10 @@ export default function EnemyComponent({
         <div className="text-xs text-blue-400">Block {enemy.block}</div>
       )}
 
-      {/* Status effects */}
+      {/* Conditions */}
       <div className="flex gap-1 text-xs">
-        <StatusEffectBadges
-          statusEffects={enemy.statusEffects}
+        <ConditionBadges
+          conditions={enemy.conditions}
           variant="short"
         />
       </div>

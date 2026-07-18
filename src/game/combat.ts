@@ -1,5 +1,5 @@
 import { GAME_CONFIG } from "./config";
-import { STATUS_EFFECT_DEFINITIONS, STATUS_EFFECT_KEYS } from "./statusEffects";
+import { CONDITION_DEFINITIONS, CONDITION_KEYS } from "./conditions";
 import type {
   CardDefinition,
   CardEffect,
@@ -8,8 +8,8 @@ import type {
   EnemyDefinition,
   EnemyState,
   PlayerState,
-  StatusEffectKey,
-  StatusEffects,
+  ConditionType,
+  ConditionState,
 } from "./types";
 
 // --- Utilities ---
@@ -33,36 +33,36 @@ function shuffle<T>(array: T[]): T[] {
   return result;
 }
 
-function createStatusEffects(): StatusEffects {
-  const effects = {} as StatusEffects;
-  for (const key of STATUS_EFFECT_KEYS) {
+function createConditionState(): ConditionState {
+  const effects = {} as ConditionState;
+  for (const key of CONDITION_KEYS) {
     effects[key] = 0;
   }
   return effects;
 }
 
-function tickStatusEffects(effects: StatusEffects): StatusEffects {
+function tickConditionState(effects: ConditionState): ConditionState {
   const result = { ...effects };
-  for (const key of STATUS_EFFECT_KEYS) {
-    if (STATUS_EFFECT_DEFINITIONS[key].decaysPerTurn) {
+  for (const key of CONDITION_KEYS) {
+    if (CONDITION_DEFINITIONS[key].decaysPerTurn) {
       result[key] = Math.max(0, result[key] - 1);
     }
   }
   return result;
 }
 
-function applyStatusEffect(
-  effects: StatusEffects,
-  key: StatusEffectKey,
+function applyCondition(
+  effects: ConditionState,
+  key: ConditionType,
   value: number,
-): StatusEffects {
+): ConditionState {
   return { ...effects, [key]: effects[key] + value };
 }
 
-function applyEnemyStatusEffect(
+function applyEnemyCondition(
   state: CombatState,
   targetEnemyId: string | null,
-  key: StatusEffectKey,
+  key: ConditionType,
   value: number,
 ): CombatState {
   return {
@@ -71,7 +71,7 @@ function applyEnemyStatusEffect(
       !targetEnemyId || e.id === targetEnemyId
         ? {
             ...e,
-            statusEffects: applyStatusEffect(e.statusEffects, key, value),
+            conditions: applyCondition(e.conditions, key, value),
           }
         : e,
     ),
@@ -82,12 +82,12 @@ function applyEnemyStatusEffect(
 
 export function calculateDamage(
   baseDamage: number,
-  attacker: StatusEffects,
-  defender: StatusEffects,
+  attacker: ConditionState,
+  defender: ConditionState,
 ): number {
   let damage = baseDamage;
-  for (const key of STATUS_EFFECT_KEYS) {
-    const multiplier = STATUS_EFFECT_DEFINITIONS[key].damageMultiplier;
+  for (const key of CONDITION_KEYS) {
+    const multiplier = CONDITION_DEFINITIONS[key].damageMultiplier;
     if (!multiplier) continue;
     const effects = multiplier.role === "attacker" ? attacker : defender;
     if (effects[key] > 0) {
@@ -128,7 +128,7 @@ export function initCombat(
     hp: def.hp,
     maxHp: def.hp,
     block: 0,
-    statusEffects: createStatusEffects(),
+    conditions: createConditionState(),
     intentIndex: 0,
     currentIntent: def.intents[0],
   }));
@@ -141,7 +141,7 @@ export function initCombat(
       maxHp,
       block: 0,
       energy: energyPerTurn,
-      statusEffects: createStatusEffects(),
+      conditions: createConditionState(),
     },
     enemies,
     deck,
@@ -240,7 +240,7 @@ function applyEffect(
         state,
         targetEnemyId,
         effect.value,
-        state.player.statusEffects,
+        state.player.conditions,
       );
     }
     case "damage_all": {
@@ -250,7 +250,7 @@ function applyEffect(
           s,
           enemy.id,
           effect.value,
-          s.player.statusEffects,
+          s.player.conditions,
         );
       }
       return s;
@@ -264,12 +264,12 @@ function applyEffect(
         },
       };
     }
-    case "apply_status": {
-      if (!effect.status) return state;
-      return applyEnemyStatusEffect(
+    case "apply_condition": {
+      if (!effect.condition) return state;
+      return applyEnemyCondition(
         state,
         targetEnemyId,
-        effect.status,
+        effect.condition,
         effect.value,
       );
     }
@@ -285,7 +285,7 @@ function applyDamageToEnemy(
   state: CombatState,
   enemyId: string,
   baseDamage: number,
-  attacker: StatusEffects,
+  attacker: ConditionState,
 ): CombatState {
   return {
     ...state,
@@ -294,7 +294,7 @@ function applyDamageToEnemy(
       const finalDamage = calculateDamage(
         baseDamage,
         attacker,
-        e.statusEffects,
+        e.conditions,
       );
       const result = applyDamageToTarget(e, finalDamage);
       return { ...e, hp: result.hp, block: result.block };
@@ -307,7 +307,7 @@ function applyDamageToEnemy(
 export function endPlayerTurn(state: CombatState): CombatState {
   if (state.phase !== "player_turn") return state;
 
-  // Tick player status effects at the end of the player's turn so that
+  // Tick player condition state at the end of the player's turn so that
   // debuffs applied by enemies last through the player's following turn.
   return {
     ...state,
@@ -316,7 +316,7 @@ export function endPlayerTurn(state: CombatState): CombatState {
     discard: [...state.discard, ...state.hand],
     player: {
       ...state.player,
-      statusEffects: tickStatusEffects(state.player.statusEffects),
+      conditions: tickConditionState(state.player.conditions),
     },
   };
 }
@@ -340,8 +340,8 @@ export function executeEnemyTurn(
       case "attack": {
         const damage = calculateDamage(
           intent.damage,
-          enemy.statusEffects,
-          player.statusEffects,
+          enemy.conditions,
+          player.conditions,
         );
         const result = applyDamageToTarget(player, damage);
         player = { ...player, hp: result.hp, block: result.block };
@@ -354,8 +354,8 @@ export function executeEnemyTurn(
       case "debuff": {
         player = {
           ...player,
-          statusEffects: applyStatusEffect(
-            player.statusEffects,
+          conditions: applyCondition(
+            player.conditions,
             intent.effect,
             intent.value,
           ),
@@ -386,7 +386,7 @@ export function executeEnemyTurn(
   const { energyPerTurn, drawPerTurn } = GAME_CONFIG.player;
 
   // Reset block and refill energy for the upcoming player turn.
-  // Player status effects are NOT ticked here; they tick in endPlayerTurn so
+  // Player condition state is NOT ticked here; it ticks in endPlayerTurn so
   // that debuffs an enemy just applied remain active during the player's turn.
   player = {
     ...player,
@@ -394,10 +394,10 @@ export function executeEnemyTurn(
     energy: energyPerTurn,
   };
 
-  // Tick enemy status effects at the end of the enemy turn.
+  // Tick enemy condition state at the end of the enemy turn.
   enemies = enemies.map((e) => ({
     ...e,
-    statusEffects: tickStatusEffects(e.statusEffects),
+    conditions: tickConditionState(e.conditions),
   }));
 
   const newState: CombatState = {
@@ -415,7 +415,7 @@ export function executeEnemyTurn(
 
 export function needsTarget(def: CardDefinition): boolean {
   return def.effects.some(
-    (e) => e.type === "damage" || e.type === "apply_status",
+    (e) => e.type === "damage" || e.type === "apply_condition",
   );
 }
 

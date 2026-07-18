@@ -4,12 +4,12 @@ export type CardType = "attack" | "skill";
 export type CardRarity = "basic" | "common" | "uncommon";
 
 export type EffectType =
-  "damage" | "damage_all" | "block" | "apply_status" | "draw";
+  "damage" | "damage_all" | "block" | "apply_condition" | "draw";
 
 export interface CardEffect {
   type: EffectType;
   value: number;
-  status?: StatusEffectKey; // type === "apply_status" のときのみ使用
+  condition?: ConditionType; // type === "apply_condition" のときのみ使用
 }
 
 export interface CardDefinition {
@@ -36,7 +36,7 @@ export type EnemyIntentType = "attack" | "defend" | "debuff";
 export type EnemyIntent =
   | { type: "attack"; damage: number }
   | { type: "defend"; block: number }
-  | { type: "debuff"; effect: StatusEffectKey; value: number };
+  | { type: "debuff"; effect: ConditionType; value: number };
 
 export interface EnemyDefinition {
   id: string;
@@ -47,19 +47,19 @@ export interface EnemyDefinition {
 
 // --- Combat State ---
 
-export interface StatusEffects {
+export interface ConditionState {
   vulnerable: number;
   weak: number;
 }
 
-export type StatusEffectKey = keyof StatusEffects;
+export type ConditionType = keyof ConditionState;
 
 export interface PlayerState {
   hp: number;
   maxHp: number;
   block: number;
   energy: number;
-  statusEffects: StatusEffects;
+  conditions: ConditionState;
 }
 
 export interface EnemyState {
@@ -69,7 +69,7 @@ export interface EnemyState {
   hp: number;
   maxHp: number;
   block: number;
-  statusEffects: StatusEffects;
+  conditions: ConditionState;
   intentIndex: number;
   currentIntent: EnemyIntent;
 }

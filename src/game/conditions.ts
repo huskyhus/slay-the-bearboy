@@ -1,8 +1,8 @@
 import { GAME_CONFIG } from "./config";
-import type { StatusEffectKey } from "./types";
+import type { ConditionType } from "./types";
 
-export interface StatusEffectDefinition {
-  key: StatusEffectKey;
+export interface ConditionDefinition {
+  key: ConditionType;
   label: string;
   shortLabel: string;
   color: string;
@@ -10,9 +10,9 @@ export interface StatusEffectDefinition {
   damageMultiplier?: { role: "attacker" | "defender"; value: number };
 }
 
-export const STATUS_EFFECT_DEFINITIONS: Record<
-  StatusEffectKey,
-  StatusEffectDefinition
+export const CONDITION_DEFINITIONS: Record<
+  ConditionType,
+  ConditionDefinition
 > = {
   vulnerable: {
     key: "vulnerable",
@@ -38,8 +38,8 @@ export const STATUS_EFFECT_DEFINITIONS: Record<
   },
 };
 
-// STATUS_EFFECT_DEFINITIONS は Record<StatusEffectKey, ...> 型なので、
-// StatusEffectKey の全キーを持つことが型で保証されている。
-export const STATUS_EFFECT_KEYS = Object.keys(
-  STATUS_EFFECT_DEFINITIONS,
-) as StatusEffectKey[];
+// CONDITION_DEFINITIONS は Record<ConditionType, ...> 型なので、
+// ConditionType の全キーを持つことが型で保証されている。
+export const CONDITION_KEYS = Object.keys(
+  CONDITION_DEFINITIONS,
+) as ConditionType[];

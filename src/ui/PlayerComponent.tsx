@@ -1,13 +1,13 @@
 "use client";
 
 import type { PlayerState } from "@/game/types";
-import StatusEffectBadges from "./StatusEffectBadges";
+import ConditionBadges from "./ConditionBadges";
 
 interface Props {
   player: PlayerState;
 }
 
-export default function PlayerStatus({ player }: Props) {
+export default function PlayerComponent({ player }: Props) {
   return (
     <div className="flex items-center gap-4 rounded-lg bg-zinc-800 px-4 py-3">
       <div className="text-sm font-bold text-zinc-200">Hasu-kun</div>
@@ -21,7 +21,7 @@ export default function PlayerStatus({ player }: Props) {
         <span className="text-yellow-400">Energy {player.energy}</span>
       </div>
       <div className="flex gap-2 text-xs">
-        <StatusEffectBadges statusEffects={player.statusEffects} />
+        <ConditionBadges conditions={player.conditions} />
       </div>
     </div>
   );

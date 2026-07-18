@@ -1,7 +1,7 @@
 "use client";
 
 import { useGameStore, getCardDef } from "@/store/gameStore";
-import PlayerStatus from "./PlayerStatus";
+import PlayerComponent from "./PlayerComponent";
 import EnemyComponent from "./EnemyComponent";
 import CardComponent from "./CardComponent";
 
@@ -99,9 +99,9 @@ export default function BattleScreen() {
         ))}
       </div>
 
-      {/* Player status */}
+      {/* Player */}
       <div className="px-6 py-2">
-        <PlayerStatus player={combat.player} />
+        <PlayerComponent player={combat.player} />
       </div>
 
       {/* Hand */}
