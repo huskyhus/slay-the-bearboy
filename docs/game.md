@@ -93,7 +93,7 @@ v1.0 ではデッキ成長がないため、[cards.json](../src/data/cards.json)
 
 ### 3.1 敵データ構造
 
-敵関連の型定義（`EnemyIntent` / `EnemyDefinition`）は [src/game/types.ts](../src/game/types.ts) を正とする。`intents` は固定ローテーション（先頭から順に繰り返す）を表す。
+敵関連の型定義（`EnemyDefinition`）は [src/game/types.ts](../src/game/types.ts) を正とする。敵のインテントはカードと共通の `Effect` 型で表現し（敵が使う場合の `damage` / `apply_condition` の対象はプレイヤー、`block` は自分自身）、`intents` は固定ローテーション（先頭から順に繰り返す）を表す。
 
 ### 3.2 敵の行動決定
 

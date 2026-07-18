@@ -4,9 +4,9 @@
     "name": "Jaw Worm",
     "hp": 42,
     "intents": [
-      { "type": "attack", "damage": 11 },
-      { "type": "defend", "block": 6 },
-      { "type": "attack", "damage": 11 }
+      { "type": "damage", "value": 11 },
+      { "type": "block", "value": 6 },
+      { "type": "damage", "value": 11 }
     ]
   },
   {
@@ -14,9 +14,9 @@
     "name": "Louse",
     "hp": 30,
     "intents": [
-      { "type": "attack", "damage": 6 },
-      { "type": "debuff", "effect": "weak", "value": 1 },
-      { "type": "attack", "damage": 6 }
+      { "type": "damage", "value": 6 },
+      { "type": "apply_condition", "condition": "weak", "value": 1 },
+      { "type": "damage", "value": 6 }
     ]
   }
 ]

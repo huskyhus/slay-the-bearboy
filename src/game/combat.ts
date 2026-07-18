@@ -2,8 +2,8 @@ import { GAME_CONFIG } from "./config";
 import { CONDITION_DEFINITIONS, CONDITION_KEYS } from "./conditions";
 import type {
   CardDefinition,
-  CardEffect,
   CardInstance,
+  Effect,
   CombatState,
   EnemyDefinition,
   EnemyState,
@@ -230,7 +230,7 @@ export function playCard(
 
 function applyEffect(
   state: CombatState,
-  effect: CardEffect,
+  effect: Effect,
   targetEnemyId: string | null,
 ): CombatState {
   switch (effect.type) {
@@ -265,7 +265,6 @@ function applyEffect(
       };
     }
     case "apply_condition": {
-      if (!effect.condition) return state;
       return applyEnemyCondition(
         state,
         targetEnemyId,
@@ -337,9 +336,11 @@ export function executeEnemyTurn(
     const intent = enemy.currentIntent;
 
     switch (intent.type) {
-      case "attack": {
+      // 敵にとっての「全体」はプレイヤー1人なので damage と同じ扱い
+      case "damage":
+      case "damage_all": {
         const damage = calculateDamage(
-          intent.damage,
+          intent.value,
           enemy.conditions,
           player.conditions,
         );
@@ -347,21 +348,22 @@ export function executeEnemyTurn(
         player = { ...player, hp: result.hp, block: result.block };
         break;
       }
-      case "defend": {
-        enemy.block += intent.block;
+      case "block": {
+        enemy.block += intent.value;
         break;
       }
-      case "debuff": {
+      case "apply_condition": {
         player = {
           ...player,
           conditions: applyCondition(
             player.conditions,
-            intent.effect,
+            intent.condition,
             intent.value,
           ),
         };
         break;
       }
+      // draw は敵の行動としては意味を持たないため無視
     }
 
     // Advance intent

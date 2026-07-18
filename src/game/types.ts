@@ -3,14 +3,14 @@
 export type CardType = "attack" | "skill";
 export type CardRarity = "basic" | "common" | "uncommon";
 
-export type EffectType =
-  "damage" | "damage_all" | "block" | "apply_condition" | "draw";
+export type Effect =
+  | { type: "damage"; value: number }
+  | { type: "damage_all"; value: number }
+  | { type: "block"; value: number }
+  | { type: "apply_condition"; condition: ConditionType; value: number }
+  | { type: "draw"; value: number };
 
-export interface CardEffect {
-  type: EffectType;
-  value: number;
-  condition?: ConditionType; // type === "apply_condition" のときのみ使用
-}
+export type EffectType = Effect["type"];
 
 export interface CardDefinition {
   id: string;
@@ -18,7 +18,7 @@ export interface CardDefinition {
   type: CardType;
   cost: number;
   rarity: CardRarity;
-  effects: CardEffect[];
+  effects: Effect[];
   description: string;
   image: string;
 }
@@ -31,18 +31,13 @@ export interface CardInstance {
 
 // --- Enemy Types ---
 
-export type EnemyIntentType = "attack" | "defend" | "debuff";
-
-export type EnemyIntent =
-  | { type: "attack"; damage: number }
-  | { type: "defend"; block: number }
-  | { type: "debuff"; effect: ConditionType; value: number };
-
+// 敵のインテントも Effect で表現する。
+// 敵が使う場合、damage / apply_condition の対象はプレイヤー、block は自分自身。
 export interface EnemyDefinition {
   id: string;
   name: string;
   hp: number;
-  intents: EnemyIntent[];
+  intents: Effect[];
 }
 
 // --- Combat State ---
@@ -71,7 +66,7 @@ export interface EnemyState {
   block: number;
   conditions: ConditionState;
   intentIndex: number;
-  currentIntent: EnemyIntent;
+  currentIntent: Effect;
 }
 
 export type CombatPhase = "player_turn" | "enemy_turn" | "victory" | "defeat";

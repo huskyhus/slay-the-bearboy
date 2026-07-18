@@ -12,22 +12,26 @@ interface Props {
 
 function intentLabel(intent: EnemyState["currentIntent"]): string {
   switch (intent.type) {
-    case "attack":
-      return `Attack ${intent.damage}`;
-    case "defend":
-      return `Defend ${intent.block}`;
-    case "debuff":
-      return `${CONDITION_DEFINITIONS[intent.effect].label} ${intent.value}`;
+    case "damage":
+    case "damage_all":
+      return `Attack ${intent.value}`;
+    case "block":
+      return `Defend ${intent.value}`;
+    case "apply_condition":
+      return `${CONDITION_DEFINITIONS[intent.condition].label} ${intent.value}`;
+    case "draw":
+      return `Draw ${intent.value}`;
   }
 }
 
 function intentColor(type: string): string {
   switch (type) {
-    case "attack":
+    case "damage":
+    case "damage_all":
       return "text-red-400";
-    case "defend":
+    case "block":
       return "text-blue-400";
-    case "debuff":
+    case "apply_condition":
       return "text-purple-400";
     default:
       return "text-zinc-400";
