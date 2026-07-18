@@ -1,5 +1,5 @@
 import { GAME_CONFIG } from "./config";
-import type { ConditionType } from "./types";
+import type { ConditionState, ConditionType } from "./types";
 
 export interface ConditionDefinition {
   key: ConditionType;
@@ -37,3 +37,7 @@ export const CONDITION_DEFINITIONS: Record<
     },
   },
 };
+
+export function initConditionState(): ConditionState {
+  return { vulnerable: 0, weak: 0 };
+}

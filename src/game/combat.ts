@@ -1,5 +1,5 @@
 import { GAME_CONFIG } from "./config";
-import { CONDITION_DEFINITIONS } from "./conditions";
+import { CONDITION_DEFINITIONS, initConditionState } from "./conditions";
 import type {
   CardDefinition,
   CardInstance,
@@ -31,10 +31,6 @@ function shuffle<T>(array: T[]): T[] {
     [result[i], result[j]] = [result[j], result[i]];
   }
   return result;
-}
-
-function createConditionState(): ConditionState {
-  return { vulnerable: 0, weak: 0 };
 }
 
 function tickConditionState(effects: ConditionState): ConditionState {
@@ -124,7 +120,7 @@ export function initCombat(
     hp: def.hp,
     maxHp: def.hp,
     block: 0,
-    conditions: createConditionState(),
+    conditions: initConditionState(),
     intentIndex: 0,
     currentIntent: def.intents[0],
   }));
@@ -137,7 +133,7 @@ export function initCombat(
       maxHp,
       block: 0,
       energy: energyPerTurn,
-      conditions: createConditionState(),
+      conditions: initConditionState(),
     },
     enemies,
     deck,
