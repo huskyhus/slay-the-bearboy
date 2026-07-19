@@ -1,5 +1,6 @@
 "use client";
 
+import { canPlayCard } from "@/game/combat";
 import { useGameStore, getCardDef } from "@/store/gameStore";
 import PlayerComponent from "./PlayerComponent";
 import EnemyComponent from "./EnemyComponent";
@@ -114,10 +115,7 @@ export default function BattleScreen() {
               key={card.instanceId}
               def={def}
               isSelected={card.instanceId === selectedCardInstanceId}
-              isPlayable={
-                combat.phase === "player_turn" &&
-                combat.player.energy >= def.cost
-              }
+              isPlayable={canPlayCard(combat, def)}
               onSelect={() => selectCard(card.instanceId)}
             />
           );
