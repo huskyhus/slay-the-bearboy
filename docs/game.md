@@ -34,8 +34,10 @@
 
 | 効果 | 対象 | 説明 | 持続 |
 |------|------|------|------|
-| Vulnerable（脆弱） | 敵 or プレイヤー | 受けるダメージを `GAME_CONFIG.combat.vulnerableMultiplier` 倍（端数切捨て） | ターン数で減少（ターン開始時に1減少） |
-| Weak（弱体） | 敵 or プレイヤー | 与えるダメージを `GAME_CONFIG.combat.weakMultiplier` 倍（端数切捨て） | ターン数で減少（ターン開始時に1減少） |
+| Vulnerable（脆弱） | 敵 or プレイヤー | 受けるダメージを `GAME_CONFIG.combat.vulnerableMultiplier` 倍（端数切捨て） | ターン数で減少（付与された側のターン終了時に1減少） |
+| Weak（弱体） | 敵 or プレイヤー | 与えるダメージを `GAME_CONFIG.combat.weakMultiplier` 倍（端数切捨て） | ターン数で減少（付与された側のターン終了時に1減少） |
+
+> 減少タイミングを「ターン終了時」とするのは、敵がプレイヤーに付与したデバフが直後のプレイヤーターン中ずっと有効になるようにするため（実装： [src/game/combat.ts](../src/game/combat.ts) の `endPlayerTurn` / `executeEnemyTurn`）。
 
 > 倍率は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG.combat` を正とする。
 
