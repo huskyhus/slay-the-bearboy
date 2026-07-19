@@ -1,7 +1,7 @@
 "use client";
 
 import { CONDITION_DEFINITIONS } from "@/game/conditions";
-import type { EnemyState } from "@/game/types";
+import type { Effect, EffectType, EnemyState } from "@/game/types";
 import ConditionBadges from "./ConditionBadges";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   onTarget: () => void;
 }
 
-function intentLabel(intent: EnemyState["currentIntent"]): string {
+function intentLabel(intent: Effect): string {
   switch (intent.type) {
     case "damage":
     case "damage_all":
@@ -24,7 +24,7 @@ function intentLabel(intent: EnemyState["currentIntent"]): string {
   }
 }
 
-function intentColor(type: string): string {
+function intentColor(type: EffectType): string {
   switch (type) {
     case "damage":
     case "damage_all":

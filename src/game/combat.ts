@@ -33,8 +33,8 @@ function shuffle<T>(array: T[]): T[] {
   return result;
 }
 
-function tickConditionState(effects: ConditionState): ConditionState {
-  const result = { ...effects };
+function tickConditionState(conditions: ConditionState): ConditionState {
+  const result = { ...conditions };
   for (const def of Object.values(CONDITION_DEFINITIONS)) {
     if (def.decaysPerTurn) {
       result[def.key] = Math.max(0, result[def.key] - 1);
@@ -44,11 +44,11 @@ function tickConditionState(effects: ConditionState): ConditionState {
 }
 
 function applyCondition(
-  effects: ConditionState,
+  conditions: ConditionState,
   key: ConditionType,
   value: number,
 ): ConditionState {
-  return { ...effects, [key]: effects[key] + value };
+  return { ...conditions, [key]: conditions[key] + value };
 }
 
 function applyEnemyCondition(
@@ -198,7 +198,6 @@ export function playCard(
     player: { ...state.player, energy: state.player.energy - def.cost },
     hand: state.hand.filter((_, i) => i !== cardIndex),
     discard: [...state.discard, card],
-    enemies: state.enemies.map((e) => ({ ...e })),
   };
 
   for (const effect of def.effects) {

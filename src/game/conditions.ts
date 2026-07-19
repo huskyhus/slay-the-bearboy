@@ -1,10 +1,13 @@
 import type { ConditionState, ConditionType } from "./types";
 
+// UI 側（ConditionBadges）が色ごとに固定クラス名を持つため、色はここで列挙する
+export type ConditionColor = "orange" | "green";
+
 export interface ConditionDefinition {
   key: ConditionType;
   label: string;
   shortLabel: string;
-  color: string;
+  color: ConditionColor;
   decaysPerTurn: boolean;
 }
 

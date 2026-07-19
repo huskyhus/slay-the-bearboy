@@ -1,9 +1,9 @@
-import { CONDITION_DEFINITIONS } from "@/game/conditions";
+import { CONDITION_DEFINITIONS, type ConditionColor } from "@/game/conditions";
 import type { ConditionState } from "@/game/types";
 
 // Tailwindはクラス名を静的解析するため、`bg-${color}-900` のような動的クラス名は
 // 本番ビルドでパージされる可能性がある。色ごとに固定クラス名を用意する。
-const COLOR_CLASSES: Record<string, string> = {
+const COLOR_CLASSES: Record<ConditionColor, string> = {
   orange: "bg-orange-900 text-orange-300",
   green: "bg-green-900 text-green-300",
 };
