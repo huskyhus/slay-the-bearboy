@@ -77,14 +77,13 @@ export function calculateDamage(
   attacker: ConditionState,
   defender: ConditionState,
 ): number {
+  const { weakMultiplier, vulnerableMultiplier } = GAME_CONFIG.combat;
   let damage = baseDamage;
-  for (const def of Object.values(CONDITION_DEFINITIONS)) {
-    const multiplier = def.damageMultiplier;
-    if (!multiplier) continue;
-    const effects = multiplier.role === "attacker" ? attacker : defender;
-    if (effects[def.key] > 0) {
-      damage = Math.floor(damage * multiplier.value);
-    }
+  if (attacker.weak > 0) {
+    damage = Math.floor(damage * weakMultiplier);
+  }
+  if (defender.vulnerable > 0) {
+    damage = Math.floor(damage * vulnerableMultiplier);
   }
   return damage;
 }
@@ -228,24 +227,13 @@ function applyEffect(
   switch (effect.type) {
     case "damage": {
       if (!targetEnemyId) return state;
-      return applyDamageToEnemy(
-        state,
-        targetEnemyId,
-        effect.value,
-        state.player.conditions,
-      );
+      return applyDamageToEnemy(state, targetEnemyId, effect.value);
     }
     case "damage_all": {
-      let s = state;
-      for (const enemy of s.enemies) {
-        s = applyDamageToEnemy(
-          s,
-          enemy.id,
-          effect.value,
-          s.player.conditions,
-        );
-      }
-      return s;
+      return state.enemies.reduce(
+        (s, enemy) => applyDamageToEnemy(s, enemy.id, effect.value),
+        state,
+      );
     }
     case "block": {
       return {
@@ -276,7 +264,6 @@ function applyDamageToEnemy(
   state: CombatState,
   enemyId: string,
   baseDamage: number,
-  attacker: ConditionState,
 ): CombatState {
   return {
     ...state,
@@ -284,7 +271,7 @@ function applyDamageToEnemy(
       if (e.id !== enemyId) return e;
       const finalDamage = calculateDamage(
         baseDamage,
-        attacker,
+        state.player.conditions,
         e.conditions,
       );
       const result = applyDamageToTarget(e, finalDamage);

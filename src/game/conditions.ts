@@ -1,4 +1,3 @@
-import { GAME_CONFIG } from "./config";
 import type { ConditionState, ConditionType } from "./types";
 
 export interface ConditionDefinition {
@@ -7,7 +6,6 @@ export interface ConditionDefinition {
   shortLabel: string;
   color: string;
   decaysPerTurn: boolean;
-  damageMultiplier?: { role: "attacker" | "defender"; value: number };
 }
 
 export const CONDITION_DEFINITIONS: Record<
@@ -20,10 +18,6 @@ export const CONDITION_DEFINITIONS: Record<
     shortLabel: "Vul",
     color: "orange",
     decaysPerTurn: true,
-    damageMultiplier: {
-      role: "defender",
-      value: GAME_CONFIG.combat.vulnerableMultiplier,
-    },
   },
   weak: {
     key: "weak",
@@ -31,10 +25,6 @@ export const CONDITION_DEFINITIONS: Record<
     shortLabel: "Wk",
     color: "green",
     decaysPerTurn: true,
-    damageMultiplier: {
-      role: "attacker",
-      value: GAME_CONFIG.combat.weakMultiplier,
-    },
   },
 };
 
