@@ -16,11 +16,11 @@ import type {
 
 let nextInstanceId = 0;
 
-export function createCardInstance(definitionId: string): CardInstance {
+function createCardInstance(definitionId: string): CardInstance {
   return { instanceId: String(nextInstanceId++), definitionId };
 }
 
-export function resetInstanceIdCounter(): void {
+function resetInstanceIdCounter(): void {
   nextInstanceId = 0;
 }
 
@@ -72,7 +72,7 @@ function applyEnemyCondition(
 
 // --- Damage Calculation ---
 
-export function calculateDamage(
+function calculateDamage(
   baseDamage: number,
   attacker: ConditionState,
   defender: ConditionState,
