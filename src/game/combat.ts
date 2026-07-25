@@ -72,7 +72,7 @@ function applyEnemyCondition(
 
 // --- Damage Calculation ---
 
-function calculateDamage(
+function calcConditionedDamage(
   baseDamage: number,
   attacker: ConditionState,
   defender: ConditionState,
@@ -268,7 +268,7 @@ function applyDamageToEnemy(
     ...state,
     enemies: state.enemies.map((e) => {
       if (e.id !== enemyId) return e;
-      const finalDamage = calculateDamage(
+      const finalDamage = calcConditionedDamage(
         baseDamage,
         state.player.conditions,
         e.conditions,
@@ -317,7 +317,7 @@ export function executeEnemyTurn(
       // 敵にとっての「全体」はプレイヤー1人なので damage と同じ扱い
       case "damage":
       case "damage_all": {
-        const damage = calculateDamage(
+        const damage = calcConditionedDamage(
           intent.value,
           enemy.conditions,
           player.conditions,
