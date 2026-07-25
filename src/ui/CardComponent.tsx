@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import type { CardDefinition } from "@/game/types";
+import type { CardDefinition, CardRarity, CardType } from "@/game/types";
 
 interface Props {
   def: CardDefinition;
@@ -11,11 +11,11 @@ interface Props {
   onSelect: () => void;
 }
 
-function typeColor(type: string): string {
+function typeColor(type: CardType): string {
   return type === "attack" ? "border-red-600" : "border-blue-600";
 }
 
-function rarityBg(rarity: string): string {
+function rarityBg(rarity: CardRarity): string {
   switch (rarity) {
     case "uncommon":
       return "bg-zinc-700";

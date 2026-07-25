@@ -1,23 +1,26 @@
 import { GAME_CONFIG } from "./config";
+import { CONDITION_DEFINITIONS, initConditionState } from "./conditions";
 import type {
   CardDefinition,
   CardInstance,
+  Effect,
   CombatState,
   EnemyDefinition,
   EnemyState,
   PlayerState,
-  StatusEffects,
+  ConditionKey,
+  ConditionState,
 } from "./types";
 
 // --- Utilities ---
 
 let nextInstanceId = 0;
 
-export function createCardInstance(definitionId: string): CardInstance {
+function createCardInstance(definitionId: string): CardInstance {
   return { instanceId: String(nextInstanceId++), definitionId };
 }
 
-export function resetInstanceIdCounter(): void {
+function resetInstanceIdCounter(): void {
   nextInstanceId = 0;
 }
 
@@ -30,43 +33,69 @@ function shuffle<T>(array: T[]): T[] {
   return result;
 }
 
-function createStatusEffects(): StatusEffects {
-  return { vulnerable: 0, weak: 0 };
+function tickConditionState(conditions: ConditionState): ConditionState {
+  const result = { ...conditions };
+  for (const def of Object.values(CONDITION_DEFINITIONS)) {
+    if (def.decaysPerTurn) {
+      result[def.key] = Math.max(0, result[def.key] - 1);
+    }
+  }
+  return result;
 }
 
-function tickStatusEffects(effects: StatusEffects): StatusEffects {
+function applyCondition(
+  conditions: ConditionState,
+  key: ConditionKey,
+  value: number,
+): ConditionState {
+  return { ...conditions, [key]: conditions[key] + value };
+}
+
+function applyEnemyCondition(
+  state: CombatState,
+  targetEnemyId: string | null,
+  key: ConditionKey,
+  value: number,
+): CombatState {
   return {
-    vulnerable: Math.max(0, effects.vulnerable - 1),
-    weak: Math.max(0, effects.weak - 1),
+    ...state,
+    enemies: state.enemies.map((e) =>
+      !targetEnemyId || e.id === targetEnemyId
+        ? {
+            ...e,
+            conditions: applyCondition(e.conditions, key, value),
+          }
+        : e,
+    ),
   };
 }
 
 // --- Damage Calculation ---
 
-export function calculateDamage(
+function calcConditionedDamage(
   baseDamage: number,
-  attackerWeak: number,
-  defenderVulnerable: number,
+  attacker: ConditionState,
+  defender: ConditionState,
 ): number {
   const { weakMultiplier, vulnerableMultiplier } = GAME_CONFIG.combat;
   let damage = baseDamage;
-  if (attackerWeak > 0) {
+  if (attacker.weak > 0) {
     damage = Math.floor(damage * weakMultiplier);
   }
-  if (defenderVulnerable > 0) {
+  if (defender.vulnerable > 0) {
     damage = Math.floor(damage * vulnerableMultiplier);
   }
   return damage;
 }
 
-function applyDamageToTarget(
-  target: { hp: number; block: number },
-  damage: number,
+function calcRemainingHpAndBlock(
+  hpAndBlock: { hp: number; block: number },
+  conditionedDamage: number,
 ): { hp: number; block: number } {
-  const remainingBlock = Math.max(0, target.block - damage);
-  const hpDamage = Math.max(0, damage - target.block);
+  const remainingBlock = Math.max(0, hpAndBlock.block - conditionedDamage);
+  const hpDamage = Math.max(0, conditionedDamage - hpAndBlock.block);
   return {
-    hp: target.hp - hpDamage,
+    hp: hpAndBlock.hp - hpDamage,
     block: remainingBlock,
   };
 }
@@ -90,7 +119,7 @@ export function initCombat(
     hp: def.hp,
     maxHp: def.hp,
     block: 0,
-    statusEffects: createStatusEffects(),
+    conditions: initConditionState(),
     intentIndex: 0,
     currentIntent: def.intents[0],
   }));
@@ -103,7 +132,7 @@ export function initCombat(
       maxHp,
       block: 0,
       energy: energyPerTurn,
-      statusEffects: createStatusEffects(),
+      conditions: initConditionState(),
     },
     enemies,
     deck,
@@ -145,9 +174,7 @@ export function canPlayCard(
   state: CombatState,
   cardDef: CardDefinition,
 ): boolean {
-  return (
-    state.phase === "player_turn" && state.player.energy >= cardDef.cost
-  );
+  return state.phase === "player_turn" && state.player.energy >= cardDef.cost;
 }
 
 export function playCard(
@@ -171,7 +198,6 @@ export function playCard(
     player: { ...state.player, energy: state.player.energy - def.cost },
     hand: state.hand.filter((_, i) => i !== cardIndex),
     discard: [...state.discard, card],
-    enemies: state.enemies.map((e) => ({ ...e })),
   };
 
   for (const effect of def.effects) {
@@ -194,30 +220,19 @@ export function playCard(
 
 function applyEffect(
   state: CombatState,
-  effect: { type: string; value: number },
+  effect: Effect,
   targetEnemyId: string | null,
 ): CombatState {
   switch (effect.type) {
     case "damage": {
       if (!targetEnemyId) return state;
-      const damage = calculateDamage(
-        effect.value,
-        state.player.statusEffects.weak,
-        0,
-      );
-      return applyDamageToEnemy(state, targetEnemyId, damage);
+      return applyDamageToEnemy(state, targetEnemyId, effect.value);
     }
     case "damage_all": {
-      let s = state;
-      for (const enemy of s.enemies) {
-        const damage = calculateDamage(
-          effect.value,
-          s.player.statusEffects.weak,
-          0,
-        );
-        s = applyDamageToEnemy(s, enemy.id, damage);
-      }
-      return s;
+      return state.enemies.reduce(
+        (s, enemy) => applyDamageToEnemy(s, enemy.id, effect.value),
+        state,
+      );
     }
     case "block": {
       return {
@@ -228,62 +243,13 @@ function applyEffect(
         },
       };
     }
-    case "apply_vulnerable": {
-      if (!targetEnemyId) {
-        // Apply to all enemies for damage_all cards
-        return {
-          ...state,
-          enemies: state.enemies.map((e) => ({
-            ...e,
-            statusEffects: {
-              ...e.statusEffects,
-              vulnerable: e.statusEffects.vulnerable + effect.value,
-            },
-          })),
-        };
-      }
-      return {
-        ...state,
-        enemies: state.enemies.map((e) =>
-          e.id === targetEnemyId
-            ? {
-                ...e,
-                statusEffects: {
-                  ...e.statusEffects,
-                  vulnerable: e.statusEffects.vulnerable + effect.value,
-                },
-              }
-            : e,
-        ),
-      };
-    }
-    case "apply_weak": {
-      if (!targetEnemyId) {
-        return {
-          ...state,
-          enemies: state.enemies.map((e) => ({
-            ...e,
-            statusEffects: {
-              ...e.statusEffects,
-              weak: e.statusEffects.weak + effect.value,
-            },
-          })),
-        };
-      }
-      return {
-        ...state,
-        enemies: state.enemies.map((e) =>
-          e.id === targetEnemyId
-            ? {
-                ...e,
-                statusEffects: {
-                  ...e.statusEffects,
-                  weak: e.statusEffects.weak + effect.value,
-                },
-              }
-            : e,
-        ),
-      };
+    case "apply_condition": {
+      return applyEnemyCondition(
+        state,
+        targetEnemyId,
+        effect.condition,
+        effect.value,
+      );
     }
     case "draw": {
       return drawCards(state, effect.value);
@@ -302,12 +268,12 @@ function applyDamageToEnemy(
     ...state,
     enemies: state.enemies.map((e) => {
       if (e.id !== enemyId) return e;
-      const finalDamage = calculateDamage(
+      const finalDamage = calcConditionedDamage(
         baseDamage,
-        0,
-        e.statusEffects.vulnerable,
+        state.player.conditions,
+        e.conditions,
       );
-      const result = applyDamageToTarget(e, finalDamage);
+      const result = calcRemainingHpAndBlock(e, finalDamage);
       return { ...e, hp: result.hp, block: result.block };
     }),
   };
@@ -318,7 +284,7 @@ function applyDamageToEnemy(
 export function endPlayerTurn(state: CombatState): CombatState {
   if (state.phase !== "player_turn") return state;
 
-  // Tick player status effects at the end of the player's turn so that
+  // Tick player condition state at the end of the player's turn so that
   // debuffs applied by enemies last through the player's following turn.
   return {
     ...state,
@@ -327,7 +293,7 @@ export function endPlayerTurn(state: CombatState): CombatState {
     discard: [...state.discard, ...state.hand],
     player: {
       ...state.player,
-      statusEffects: tickStatusEffects(state.player.statusEffects),
+      conditions: tickConditionState(state.player.conditions),
     },
   };
 }
@@ -348,40 +314,34 @@ export function executeEnemyTurn(
     const intent = enemy.currentIntent;
 
     switch (intent.type) {
-      case "attack": {
-        const damage = calculateDamage(
-          intent.damage,
-          enemy.statusEffects.weak,
-          player.statusEffects.vulnerable,
+      // 敵にとっての「全体」はプレイヤー1人なので damage と同じ扱い
+      case "damage":
+      case "damage_all": {
+        const damage = calcConditionedDamage(
+          intent.value,
+          enemy.conditions,
+          player.conditions,
         );
-        const result = applyDamageToTarget(player, damage);
+        const result = calcRemainingHpAndBlock(player, damage);
         player = { ...player, hp: result.hp, block: result.block };
         break;
       }
-      case "defend": {
-        enemy.block += intent.block;
+      case "block": {
+        enemy.block += intent.value;
         break;
       }
-      case "debuff": {
-        if (intent.effect === "weak") {
-          player = {
-            ...player,
-            statusEffects: {
-              ...player.statusEffects,
-              weak: player.statusEffects.weak + intent.value,
-            },
-          };
-        } else if (intent.effect === "vulnerable") {
-          player = {
-            ...player,
-            statusEffects: {
-              ...player.statusEffects,
-              vulnerable: player.statusEffects.vulnerable + intent.value,
-            },
-          };
-        }
+      case "apply_condition": {
+        player = {
+          ...player,
+          conditions: applyCondition(
+            player.conditions,
+            intent.condition,
+            intent.value,
+          ),
+        };
         break;
       }
+      // draw は敵の行動としては意味を持たないため無視
     }
 
     // Advance intent
@@ -406,7 +366,7 @@ export function executeEnemyTurn(
   const { energyPerTurn, drawPerTurn } = GAME_CONFIG.player;
 
   // Reset block and refill energy for the upcoming player turn.
-  // Player status effects are NOT ticked here; they tick in endPlayerTurn so
+  // Player condition state is NOT ticked here; it ticks in endPlayerTurn so
   // that debuffs an enemy just applied remain active during the player's turn.
   player = {
     ...player,
@@ -414,10 +374,10 @@ export function executeEnemyTurn(
     energy: energyPerTurn,
   };
 
-  // Tick enemy status effects at the end of the enemy turn.
+  // Tick enemy condition state at the end of the enemy turn.
   enemies = enemies.map((e) => ({
     ...e,
-    statusEffects: tickStatusEffects(e.statusEffects),
+    conditions: tickConditionState(e.conditions),
   }));
 
   const newState: CombatState = {
@@ -435,10 +395,7 @@ export function executeEnemyTurn(
 
 export function needsTarget(def: CardDefinition): boolean {
   return def.effects.some(
-    (e) =>
-      e.type === "damage" ||
-      e.type === "apply_vulnerable" ||
-      e.type === "apply_weak",
+    (e) => e.type === "damage" || e.type === "apply_condition",
   );
 }
 

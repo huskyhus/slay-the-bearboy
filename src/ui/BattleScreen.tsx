@@ -1,7 +1,8 @@
 "use client";
 
+import { canPlayCard } from "@/game/combat";
 import { useGameStore, getCardDef } from "@/store/gameStore";
-import PlayerStatus from "./PlayerStatus";
+import PlayerComponent from "./PlayerComponent";
 import EnemyComponent from "./EnemyComponent";
 import CardComponent from "./CardComponent";
 
@@ -99,9 +100,9 @@ export default function BattleScreen() {
         ))}
       </div>
 
-      {/* Player status */}
+      {/* Player */}
       <div className="px-6 py-2">
-        <PlayerStatus player={combat.player} />
+        <PlayerComponent player={combat.player} />
       </div>
 
       {/* Hand */}
@@ -114,10 +115,7 @@ export default function BattleScreen() {
               key={card.instanceId}
               def={def}
               isSelected={card.instanceId === selectedCardInstanceId}
-              isPlayable={
-                combat.phase === "player_turn" &&
-                combat.player.energy >= def.cost
-              }
+              isPlayable={canPlayCard(combat, def)}
               onSelect={() => selectCard(card.instanceId)}
             />
           );

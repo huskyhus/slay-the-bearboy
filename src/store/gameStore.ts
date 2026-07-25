@@ -3,6 +3,7 @@ import type { CardDefinition, CombatState, EnemyDefinition } from "@/game/types"
 import {
   initCombat,
   playCard,
+  canPlayCard,
   endPlayerTurn,
   executeEnemyTurn,
   needsTarget,
@@ -29,89 +30,75 @@ interface GameStore {
   selectCard: (instanceId: string) => void;
   deselectCard: () => void;
   targetEnemy: (enemyId: string) => void;
-  playSelectedCard: (targetEnemyId: string | null) => void;
   endTurn: () => void;
 }
 
-export const useGameStore = create<GameStore>((set, get) => ({
-  combat: null,
-  selectedCardInstanceId: null,
-
-  startCombat: () => {
+export const useGameStore = create<GameStore>((set, get) => {
+  const playAndDeselect = (
+    combat: CombatState,
+    instanceId: string,
+    targetEnemyId: string | null,
+  ) => {
     set({
-      combat: initCombat(cardDefs, enemyDefs),
+      combat: playCard(combat, instanceId, targetEnemyId, cardDefsMap),
       selectedCardInstanceId: null,
     });
-  },
+  };
 
-  selectCard: (instanceId: string) => {
-    const { combat } = get();
-    if (!combat || combat.phase !== "player_turn") return;
+  return {
+    combat: null,
+    selectedCardInstanceId: null,
 
-    const card = combat.hand.find((c) => c.instanceId === instanceId);
-    if (!card) return;
-    const def = cardDefsMap.get(card.definitionId);
-    if (!def || def.cost > combat.player.energy) return;
+    startCombat: () => {
+      set({
+        combat: initCombat(cardDefs, enemyDefs),
+        selectedCardInstanceId: null,
+      });
+    },
 
-    // If card doesn't need a target (no single-target effects or is AOE-only), play immediately
-    if (!needsTarget(def) || hasAoeEffect(def)) {
-      // For AOE cards with debuffs (like Thunderclap), apply to all
-      const state = playCard(combat, instanceId, null, cardDefsMap);
-      set({ combat: state, selectedCardInstanceId: null });
-      return;
-    }
+    selectCard: (instanceId: string) => {
+      const { combat } = get();
+      if (!combat) return;
 
-    // If only one enemy alive, auto-target
-    if (combat.enemies.length === 1) {
-      const state = playCard(
-        combat,
-        instanceId,
-        combat.enemies[0].id,
-        cardDefsMap,
-      );
-      set({ combat: state, selectedCardInstanceId: null });
-      return;
-    }
+      const card = combat.hand.find((c) => c.instanceId === instanceId);
+      if (!card) return;
+      const def = cardDefsMap.get(card.definitionId);
+      if (!def || !canPlayCard(combat, def)) return;
 
-    set({ selectedCardInstanceId: instanceId });
-  },
+      // If card doesn't need a target (no single-target effects or is AOE-only), play immediately
+      if (!needsTarget(def) || hasAoeEffect(def)) {
+        // For AOE cards with debuffs (like Thunderclap), apply to all
+        playAndDeselect(combat, instanceId, null);
+        return;
+      }
 
-  deselectCard: () => {
-    set({ selectedCardInstanceId: null });
-  },
+      // If only one enemy alive, auto-target
+      if (combat.enemies.length === 1) {
+        playAndDeselect(combat, instanceId, combat.enemies[0].id);
+        return;
+      }
 
-  targetEnemy: (enemyId: string) => {
-    const { combat, selectedCardInstanceId } = get();
-    if (!combat || !selectedCardInstanceId) return;
+      set({ selectedCardInstanceId: instanceId });
+    },
 
-    const state = playCard(
-      combat,
-      selectedCardInstanceId,
-      enemyId,
-      cardDefsMap,
-    );
-    set({ combat: state, selectedCardInstanceId: null });
-  },
+    deselectCard: () => {
+      set({ selectedCardInstanceId: null });
+    },
 
-  playSelectedCard: (targetEnemyId: string | null) => {
-    const { combat, selectedCardInstanceId } = get();
-    if (!combat || !selectedCardInstanceId) return;
+    targetEnemy: (enemyId: string) => {
+      const { combat, selectedCardInstanceId } = get();
+      if (!combat || !selectedCardInstanceId) return;
 
-    const state = playCard(
-      combat,
-      selectedCardInstanceId,
-      targetEnemyId,
-      cardDefsMap,
-    );
-    set({ combat: state, selectedCardInstanceId: null });
-  },
+      playAndDeselect(combat, selectedCardInstanceId, enemyId);
+    },
 
-  endTurn: () => {
-    const { combat } = get();
-    if (!combat || combat.phase !== "player_turn") return;
+    endTurn: () => {
+      const { combat } = get();
+      if (!combat || combat.phase !== "player_turn") return;
 
-    const afterEnd = endPlayerTurn(combat);
-    const afterEnemies = executeEnemyTurn(afterEnd, enemyDefsMap);
-    set({ combat: afterEnemies, selectedCardInstanceId: null });
-  },
-}));
+      const afterEnd = endPlayerTurn(combat);
+      const afterEnemies = executeEnemyTurn(afterEnd, enemyDefsMap);
+      set({ combat: afterEnemies, selectedCardInstanceId: null });
+    },
+  };
+});

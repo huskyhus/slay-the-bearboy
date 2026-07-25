@@ -1,6 +1,8 @@
 "use client";
 
-import type { EnemyState } from "@/game/types";
+import { CONDITION_DEFINITIONS } from "@/game/conditions";
+import type { Effect, EffectType, EnemyState } from "@/game/types";
+import ConditionBadges from "./ConditionBadges";
 
 interface Props {
   enemy: EnemyState;
@@ -8,31 +10,39 @@ interface Props {
   onTarget: () => void;
 }
 
-function intentLabel(intent: EnemyState["currentIntent"]): string {
+function intentLabel(intent: Effect): string {
   switch (intent.type) {
-    case "attack":
-      return `Attack ${intent.damage}`;
-    case "defend":
-      return `Defend ${intent.block}`;
-    case "debuff":
-      return `${intent.effect === "weak" ? "Weak" : "Vulnerable"} ${intent.value}`;
+    case "damage":
+    case "damage_all":
+      return `Attack ${intent.value}`;
+    case "block":
+      return `Defend ${intent.value}`;
+    case "apply_condition":
+      return `${CONDITION_DEFINITIONS[intent.condition].label} ${intent.value}`;
+    case "draw":
+      return `Draw ${intent.value}`;
   }
 }
 
-function intentColor(type: string): string {
+function intentColor(type: EffectType): string {
   switch (type) {
-    case "attack":
+    case "damage":
+    case "damage_all":
       return "text-red-400";
-    case "defend":
+    case "block":
       return "text-blue-400";
-    case "debuff":
+    case "apply_condition":
       return "text-purple-400";
     default:
       return "text-zinc-400";
   }
 }
 
-export default function EnemyComponent({ enemy, isTargeting, onTarget }: Props) {
+export default function EnemyComponent({
+  enemy,
+  isTargeting,
+  onTarget,
+}: Props) {
   const hpPercent = Math.max(0, (enemy.hp / enemy.maxHp) * 100);
 
   return (
@@ -66,18 +76,12 @@ export default function EnemyComponent({ enemy, isTargeting, onTarget }: Props) 
         <div className="text-xs text-blue-400">Block {enemy.block}</div>
       )}
 
-      {/* Status effects */}
+      {/* Conditions */}
       <div className="flex gap-1 text-xs">
-        {enemy.statusEffects.vulnerable > 0 && (
-          <span className="rounded bg-orange-900 px-1 py-0.5 text-orange-300">
-            Vul {enemy.statusEffects.vulnerable}
-          </span>
-        )}
-        {enemy.statusEffects.weak > 0 && (
-          <span className="rounded bg-green-900 px-1 py-0.5 text-green-300">
-            Wk {enemy.statusEffects.weak}
-          </span>
-        )}
+        <ConditionBadges
+          conditions={enemy.conditions}
+          variant="short"
+        />
       </div>
 
       {/* Intent */}
