@@ -7,7 +7,7 @@ export type Effect =
   | { type: "damage"; value: number }
   | { type: "damage_all"; value: number }
   | { type: "block"; value: number }
-  | { type: "apply_condition"; condition: ConditionType; value: number }
+  | { type: "apply_condition"; condition: ConditionKey; value: number }
   | { type: "draw"; value: number };
 
 export type EffectType = Effect["type"];
@@ -47,7 +47,7 @@ export interface ConditionState {
   weak: number;
 }
 
-export type ConditionType = keyof ConditionState;
+export type ConditionKey = keyof ConditionState;
 
 export interface PlayerState {
   hp: number;

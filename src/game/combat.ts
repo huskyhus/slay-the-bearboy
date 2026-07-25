@@ -8,7 +8,7 @@ import type {
   EnemyDefinition,
   EnemyState,
   PlayerState,
-  ConditionType,
+  ConditionKey,
   ConditionState,
 } from "./types";
 
@@ -45,7 +45,7 @@ function tickConditionState(conditions: ConditionState): ConditionState {
 
 function applyCondition(
   conditions: ConditionState,
-  key: ConditionType,
+  key: ConditionKey,
   value: number,
 ): ConditionState {
   return { ...conditions, [key]: conditions[key] + value };
@@ -54,7 +54,7 @@ function applyCondition(
 function applyEnemyCondition(
   state: CombatState,
   targetEnemyId: string | null,
-  key: ConditionType,
+  key: ConditionKey,
   value: number,
 ): CombatState {
   return {

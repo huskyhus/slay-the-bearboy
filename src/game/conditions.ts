@@ -1,10 +1,10 @@
-import type { ConditionState, ConditionType } from "./types";
+import type { ConditionState, ConditionKey } from "./types";
 
 // UI 側（ConditionBadges）が色ごとに固定クラス名を持つため、色はここで列挙する
 export type ConditionColor = "orange" | "green";
 
 export interface ConditionDefinition {
-  key: ConditionType;
+  key: ConditionKey;
   label: string;
   shortLabel: string;
   color: ConditionColor;
@@ -12,7 +12,7 @@ export interface ConditionDefinition {
 }
 
 export const CONDITION_DEFINITIONS: Record<
-  ConditionType,
+  ConditionKey,
   ConditionDefinition
 > = {
   vulnerable: {
