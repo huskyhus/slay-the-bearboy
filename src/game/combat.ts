@@ -88,14 +88,14 @@ function calcConditionedDamage(
   return damage;
 }
 
-function applyDamageToTarget(
-  target: { hp: number; block: number },
-  damage: number,
+function calcRemainingHpAndBlock(
+  hpAndBlock: { hp: number; block: number },
+  conditionedDamage: number,
 ): { hp: number; block: number } {
-  const remainingBlock = Math.max(0, target.block - damage);
-  const hpDamage = Math.max(0, damage - target.block);
+  const remainingBlock = Math.max(0, hpAndBlock.block - conditionedDamage);
+  const hpDamage = Math.max(0, conditionedDamage - hpAndBlock.block);
   return {
-    hp: target.hp - hpDamage,
+    hp: hpAndBlock.hp - hpDamage,
     block: remainingBlock,
   };
 }
@@ -273,7 +273,7 @@ function applyDamageToEnemy(
         state.player.conditions,
         e.conditions,
       );
-      const result = applyDamageToTarget(e, finalDamage);
+      const result = calcRemainingHpAndBlock(e, finalDamage);
       return { ...e, hp: result.hp, block: result.block };
     }),
   };
@@ -322,7 +322,7 @@ export function executeEnemyTurn(
           enemy.conditions,
           player.conditions,
         );
-        const result = applyDamageToTarget(player, damage);
+        const result = calcRemainingHpAndBlock(player, damage);
         player = { ...player, hp: result.hp, block: result.block };
         break;
       }
