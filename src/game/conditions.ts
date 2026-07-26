@@ -1,36 +1,39 @@
 import type { ConditionState, ConditionKey } from "./types";
 
-// UI 側（ConditionBadges）が色ごとに固定クラス名を持つため、色はここで列挙する
-export type ConditionColor = "orange" | "green";
-
-export interface ConditionDefinition {
+interface ConditionRule {
   key: ConditionKey;
-  label: string;
-  shortLabel: string;
-  color: ConditionColor;
   decaysPerTurn: boolean;
 }
 
-export const CONDITION_DEFINITIONS: Record<
-  ConditionKey,
-  ConditionDefinition
-> = {
+export const CONDITION_RULES: Record<ConditionKey, ConditionRule> = {
   vulnerable: {
     key: "vulnerable",
-    label: "Vulnerable",
-    shortLabel: "Vul",
-    color: "orange",
     decaysPerTurn: true,
   },
   weak: {
     key: "weak",
-    label: "Weak",
-    shortLabel: "Wk",
-    color: "green",
     decaysPerTurn: true,
   },
 };
 
 export function initConditionState(): ConditionState {
   return { vulnerable: 0, weak: 0 };
+}
+
+export function applyCondition(
+  conditions: ConditionState,
+  key: ConditionKey,
+  value: number,
+): ConditionState {
+  return { ...conditions, [key]: conditions[key] + value };
+}
+
+export function tickConditionState(conditions: ConditionState): ConditionState {
+  const result = { ...conditions };
+  for (const rule of Object.values(CONDITION_RULES)) {
+    if (rule.decaysPerTurn) {
+      result[rule.key] = Math.max(0, result[rule.key] - 1);
+    }
+  }
+  return result;
 }

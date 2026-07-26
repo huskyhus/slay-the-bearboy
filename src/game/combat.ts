@@ -1,104 +1,25 @@
 import { GAME_CONFIG } from "./config";
-import { CONDITION_DEFINITIONS, initConditionState } from "./conditions";
+import {
+  applyCondition,
+  initConditionState,
+  tickConditionState,
+} from "./conditions";
+import {
+  createCardInstance,
+  drawCards,
+  resetInstanceIdCounter,
+  shuffle,
+} from "./deck";
 import type {
   CardDefinition,
-  CardInstance,
   Effect,
   CombatState,
+  ConditionState,
   EnemyDefinition,
   EnemyState,
   PlayerState,
   ConditionKey,
-  ConditionState,
 } from "./types";
-
-// --- Utilities ---
-
-let nextInstanceId = 0;
-
-function createCardInstance(definitionId: string): CardInstance {
-  return { instanceId: String(nextInstanceId++), definitionId };
-}
-
-function resetInstanceIdCounter(): void {
-  nextInstanceId = 0;
-}
-
-function shuffle<T>(array: T[]): T[] {
-  const result = [...array];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
-
-function tickConditionState(conditions: ConditionState): ConditionState {
-  const result = { ...conditions };
-  for (const def of Object.values(CONDITION_DEFINITIONS)) {
-    if (def.decaysPerTurn) {
-      result[def.key] = Math.max(0, result[def.key] - 1);
-    }
-  }
-  return result;
-}
-
-function applyCondition(
-  conditions: ConditionState,
-  key: ConditionKey,
-  value: number,
-): ConditionState {
-  return { ...conditions, [key]: conditions[key] + value };
-}
-
-function applyEnemyCondition(
-  state: CombatState,
-  targetEnemyId: string | null,
-  key: ConditionKey,
-  value: number,
-): CombatState {
-  return {
-    ...state,
-    enemies: state.enemies.map((e) =>
-      !targetEnemyId || e.id === targetEnemyId
-        ? {
-            ...e,
-            conditions: applyCondition(e.conditions, key, value),
-          }
-        : e,
-    ),
-  };
-}
-
-// --- Damage Calculation ---
-
-function calcConditionedDamage(
-  baseDamage: number,
-  attacker: ConditionState,
-  defender: ConditionState,
-): number {
-  const { weakMultiplier, vulnerableMultiplier } = GAME_CONFIG.combat;
-  let damage = baseDamage;
-  if (attacker.weak > 0) {
-    damage = Math.floor(damage * weakMultiplier);
-  }
-  if (defender.vulnerable > 0) {
-    damage = Math.floor(damage * vulnerableMultiplier);
-  }
-  return damage;
-}
-
-function calcRemainingHpAndBlock(
-  hpAndBlock: { hp: number; block: number },
-  conditionedDamage: number,
-): { hp: number; block: number } {
-  const remainingBlock = Math.max(0, hpAndBlock.block - conditionedDamage);
-  const hpDamage = Math.max(0, conditionedDamage - hpAndBlock.block);
-  return {
-    hp: hpAndBlock.hp - hpDamage,
-    block: remainingBlock,
-  };
-}
 
 // --- Combat Initialization ---
 
@@ -144,28 +65,73 @@ export function initCombat(
   return drawCards(state, GAME_CONFIG.player.drawPerTurn);
 }
 
-// --- Card Drawing ---
+// --- Applying Damage or Condition ---
 
-export function drawCards(state: CombatState, count: number): CombatState {
-  let deck = [...state.deck];
-  const hand = [...state.hand];
-  let discard = [...state.discard];
-  const { maxHandSize } = GAME_CONFIG.player;
+function applyDamageToEnemy(
+  state: CombatState,
+  enemyId: string,
+  baseDamage: number,
+): CombatState {
+  return {
+    ...state,
+    enemies: state.enemies.map((e) => {
+      if (e.id !== enemyId) return e;
+      const finalDamage = calcConditionedDamage(
+        baseDamage,
+        state.player.conditions,
+        e.conditions,
+      );
+      const result = calcRemainingHpAndBlock(e, finalDamage);
+      return { ...e, hp: result.hp, block: result.block };
+    }),
+  };
+}
 
-  for (let i = 0; i < count; i++) {
-    if (hand.length >= maxHandSize) break;
-
-    if (deck.length === 0) {
-      if (discard.length === 0) break;
-      deck = shuffle(discard);
-      discard = [];
-    }
-
-    hand.push(deck[0]);
-    deck = deck.slice(1);
+function calcConditionedDamage(
+  baseDamage: number,
+  attacker: ConditionState,
+  defender: ConditionState,
+): number {
+  const { weakMultiplier, vulnerableMultiplier } = GAME_CONFIG.combat;
+  let damage = baseDamage;
+  if (attacker.weak > 0) {
+    damage = Math.floor(damage * weakMultiplier);
   }
+  if (defender.vulnerable > 0) {
+    damage = Math.floor(damage * vulnerableMultiplier);
+  }
+  return damage;
+}
 
-  return { ...state, deck, hand, discard };
+function calcRemainingHpAndBlock(
+  hpAndBlock: { hp: number; block: number },
+  conditionedDamage: number,
+): { hp: number; block: number } {
+  const remainingBlock = Math.max(0, hpAndBlock.block - conditionedDamage);
+  const hpDamage = Math.max(0, conditionedDamage - hpAndBlock.block);
+  return {
+    hp: hpAndBlock.hp - hpDamage,
+    block: remainingBlock,
+  };
+}
+
+function applyEnemyCondition(
+  state: CombatState,
+  targetEnemyId: string | null,
+  key: ConditionKey,
+  value: number,
+): CombatState {
+  return {
+    ...state,
+    enemies: state.enemies.map((e) =>
+      !targetEnemyId || e.id === targetEnemyId
+        ? {
+            ...e,
+            conditions: applyCondition(e.conditions, key, value),
+          }
+        : e,
+    ),
+  };
 }
 
 // --- Playing a Card ---
@@ -257,26 +223,6 @@ function applyEffect(
     default:
       return state;
   }
-}
-
-function applyDamageToEnemy(
-  state: CombatState,
-  enemyId: string,
-  baseDamage: number,
-): CombatState {
-  return {
-    ...state,
-    enemies: state.enemies.map((e) => {
-      if (e.id !== enemyId) return e;
-      const finalDamage = calcConditionedDamage(
-        baseDamage,
-        state.player.conditions,
-        e.conditions,
-      );
-      const result = calcRemainingHpAndBlock(e, finalDamage);
-      return { ...e, hp: result.hp, block: result.block };
-    }),
-  };
 }
 
 // --- End Turn ---
@@ -389,16 +335,4 @@ export function executeEnemyTurn(
   };
 
   return drawCards(newState, drawPerTurn);
-}
-
-// --- Helpers for UI ---
-
-export function needsTarget(def: CardDefinition): boolean {
-  return def.effects.some(
-    (e) => e.type === "damage" || e.type === "apply_condition",
-  );
-}
-
-export function hasAoeEffect(def: CardDefinition): boolean {
-  return def.effects.some((e) => e.type === "damage_all");
 }

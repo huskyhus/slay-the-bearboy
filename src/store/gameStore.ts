@@ -6,9 +6,8 @@ import {
   canPlayCard,
   endPlayerTurn,
   executeEnemyTurn,
-  needsTarget,
-  hasAoeEffect,
 } from "@/game/combat";
+import { needsTarget, hasAoeEffect } from "@/game/cards";
 import cardsData from "@/data/cards.json";
 import enemiesData from "@/data/enemies.json";
 
