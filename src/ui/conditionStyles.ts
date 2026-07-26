@@ -4,7 +4,6 @@ import type { ConditionKey } from "@/game/types";
 export type ConditionColor = "orange" | "green";
 
 interface ConditionStyle {
-  key: ConditionKey;
   label: string;
   shortLabel: string;
   color: ConditionColor;
@@ -12,13 +11,11 @@ interface ConditionStyle {
 
 export const CONDITION_STYLES: Record<ConditionKey, ConditionStyle> = {
   vulnerable: {
-    key: "vulnerable",
     label: "Vulnerable",
     shortLabel: "Vul",
     color: "orange",
   },
   weak: {
-    key: "weak",
     label: "Weak",
     shortLabel: "Wk",
     color: "green",

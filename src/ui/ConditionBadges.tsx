@@ -1,3 +1,4 @@
+import { conditionKeys } from "@/game/conditions";
 import type { ConditionState } from "@/game/types";
 import { CONDITION_STYLES, type ConditionColor } from "./conditionStyles";
 
@@ -19,13 +20,14 @@ export default function ConditionBadges({
 }: Props) {
   return (
     <>
-      {Object.values(CONDITION_STYLES).map((style) => {
-        const value = conditions[style.key];
+      {conditionKeys().map((key) => {
+        const value = conditions[key];
         if (value <= 0) return null;
+        const style = CONDITION_STYLES[key];
         const label = variant === "short" ? style.shortLabel : style.label;
         return (
           <span
-            key={style.key}
+            key={key}
             className={`rounded px-1.5 py-0.5 ${COLOR_CLASSES[style.color]}`}
           >
             {label} {value}
