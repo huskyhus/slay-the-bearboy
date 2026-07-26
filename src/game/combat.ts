@@ -12,13 +12,13 @@ import {
 } from "./deck";
 import type {
   CardDefinition,
-  Effect,
   CombatState,
+  ConditionKey,
   ConditionState,
+  Effect,
   EnemyDefinition,
   EnemyState,
   PlayerState,
-  ConditionKey,
 } from "./types";
 
 // --- Combat Initialization ---

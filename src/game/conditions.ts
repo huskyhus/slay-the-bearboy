@@ -1,4 +1,4 @@
-import type { ConditionState, ConditionKey } from "./types";
+import type { ConditionKey, ConditionState } from "./types";
 
 interface ConditionRule {
   decaysPerTurn: boolean;
