@@ -4,12 +4,8 @@ import {
   initConditionState,
   tickConditionState,
 } from "./conditions";
-import {
-  createCardInstance,
-  drawCards,
-  resetInstanceIdCounter,
-  shuffle,
-} from "./deck";
+import { drawCards, initDeck } from "./deck";
+import { createRngState } from "./rng";
 import type {
   CardDefinition,
   CombatState,
@@ -26,12 +22,11 @@ import type {
 export function initCombat(
   cardDefs: CardDefinition[],
   enemyDefs: EnemyDefinition[],
+  seed: number,
 ): CombatState {
-  resetInstanceIdCounter();
   const { maxHp, energyPerTurn } = GAME_CONFIG.player;
 
-  const allCards = cardDefs.map((def) => createCardInstance(def.id));
-  const deck = shuffle(allCards);
+  const { deck, rng } = initDeck(cardDefs, createRngState(seed));
 
   const enemies: EnemyState[] = enemyDefs.map((def, index) => ({
     id: `${def.id}_${index}`,
@@ -60,6 +55,8 @@ export function initCombat(
     hand: [],
     discard: [],
     exhaust: [],
+    seed,
+    rng,
   };
 
   return drawCards(state, GAME_CONFIG.player.drawPerTurn);

@@ -25,7 +25,7 @@ interface GameStore {
   combat: CombatState | null;
   selectedCardInstanceId: string | null;
 
-  startCombat: () => void;
+  startCombat: (seed?: number) => void;
   selectCard: (instanceId: string) => void;
   deselectCard: () => void;
   targetEnemy: (enemyId: string) => void;
@@ -48,9 +48,11 @@ export const useGameStore = create<GameStore>((set, get) => {
     combat: null,
     selectedCardInstanceId: null,
 
-    startCombat: () => {
+    // 非決定的なシードの生成はここ（ストア境界）で行い，src/game/ は純粋に保つ．
+    // `seed`を明示すれば，同じ戦闘を再現できる．
+    startCombat: (seed: number = Date.now()) => {
       set({
-        combat: initCombat(cardDefs, enemyDefs),
+        combat: initCombat(cardDefs, enemyDefs, seed),
         selectedCardInstanceId: null,
       });
     },

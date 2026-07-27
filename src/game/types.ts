@@ -1,3 +1,5 @@
+import type { RngState } from "./rng";
+
 // --- Card Types ---
 
 export type CardType = "attack" | "skill";
@@ -80,4 +82,8 @@ export interface CombatState {
   hand: CardInstance[];
   discard: CardInstance[];
   exhaust: CardInstance[];
+  // 戦闘開始時のシード．同じシードなら戦闘全体を再現できる（不具合再現・リプレイ用）．
+  seed: number;
+  // 現在の乱数状態．シャッフルのたびに更新される．
+  rng: RngState;
 }

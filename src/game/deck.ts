@@ -1,29 +1,26 @@
 import { GAME_CONFIG } from "./config";
-import type { CardInstance, CombatState } from "./types";
+import { shuffle, type RngState } from "./rng";
+import type { CardDefinition, CardInstance, CombatState } from "./types";
 
-let nextInstanceId = 0;
-
-export function createCardInstance(definitionId: string): CardInstance {
-  return { instanceId: String(nextInstanceId++), definitionId };
-}
-
-export function resetInstanceIdCounter(): void {
-  nextInstanceId = 0;
-}
-
-export function shuffle<T>(array: T[]): T[] {
-  const result = [...array];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
+// 初期デッキ（カード定義から実体を生成してシャッフルしたもの）を作成する．
+export function initDeck(
+  cardDefs: CardDefinition[],
+  rngState: RngState,
+): { deck: CardInstance[]; rng: RngState } {
+  // `instanceId`は，定義IDと初期デッキ内の位置から決定的に採番する．
+  const cards: CardInstance[] = cardDefs.map((def, index) => ({
+    instanceId: `${def.id}#${index}`,
+    definitionId: def.id,
+  }));
+  const shuffled = shuffle(cards, rngState);
+  return { deck: shuffled.items, rng: shuffled.state };
 }
 
 export function drawCards(state: CombatState, count: number): CombatState {
   let deck = [...state.deck];
   const hand = [...state.hand];
   let discard = [...state.discard];
+  let rng = state.rng;
   const { maxHandSize } = GAME_CONFIG.player;
 
   for (let i = 0; i < count; i++) {
@@ -31,7 +28,9 @@ export function drawCards(state: CombatState, count: number): CombatState {
 
     if (deck.length === 0) {
       if (discard.length === 0) break;
-      deck = shuffle(discard);
+      const reshuffled = shuffle(discard, rng);
+      deck = reshuffled.items;
+      rng = reshuffled.state;
       discard = [];
     }
 
@@ -39,5 +38,5 @@ export function drawCards(state: CombatState, count: number): CombatState {
     deck = deck.slice(1);
   }
 
-  return { ...state, deck, hand, discard };
+  return { ...state, deck, hand, discard, rng };
 }

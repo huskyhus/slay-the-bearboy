@@ -62,7 +62,9 @@ HP減少     = 実ダメージ
 
 ### 2.1 デッキゾーン
 
-ドローと山札の補充（捨て札のシャッフル）の実装は [src/game/deck.ts](../src/game/deck.ts) を正とする。手札から捨て札への移動はカードのプレイ／ターン終了に伴うため [src/game/combat.ts](../src/game/combat.ts) にある。
+初期デッキの生成・ドロー・山札の補充の実装は [src/game/deck.ts](../src/game/deck.ts) を正とし、公開 API は `initDeck` / `drawCards` の2つである（シャッフル自体は乱数を扱うため [src/game/rng.ts](../src/game/rng.ts) にある）。手札から捨て札への移動はカードのプレイ／ターン終了に伴うため [src/game/combat.ts](../src/game/combat.ts) にある。
+
+カード実体の `instanceId` は「定義 ID + 初期デッキ内の位置」から決定的に採番する（可変なグローバルカウンタは持たない）。
 
 | ゾーン | 説明 |
 |--------|------|
@@ -120,3 +122,14 @@ v1.0 では **Jaw Worm** と **Louse** の2体が登場する。各敵の HP と
 ## 5. 定数定義
 
 ゲームバランスに関わる定数（プレイヤーの最大HP・エナジー・ドロー枚数・手札上限、戦闘の各倍率）は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG` に定数として宣言し、一元管理する。本ドキュメントでは数値を重複させず、常に `config.ts` を正とする。
+
+---
+
+## 6. 乱数と決定性
+
+`src/game/` 以下は「同じ入力なら常に同じ結果を返す」純粋なロジックとして保つ。ユニットテストとバランス調整用シミュレータがこの性質を前提とするため、`Math.random()` や可変なモジュールグローバル変数は使わない。
+
+- 乱数を使う処理はすべて [src/game/rng.ts](../src/game/rng.ts) に置く。実装には [pure-rand](https://github.com/dubzzz/pure-rand) の xoroshiro128plus を用いる。
+- 乱数の状態はシリアライズ可能なスナップショット (`RngState`) として `CombatState.rng` に持ち、シャッフルのたびに更新される。可変なジェネレータ実体と pure-rand への依存は `rng.ts` の内側に閉じ込め、外部には公開しない。
+- `CombatState.seed` には戦闘開始時のシードを保持する。同じシード・同じ操作列であれば戦闘全体を完全に再現できる（不具合再現・リプレイ用）。
+- 非決定的なシードの生成は [src/store/gameStore.ts](../src/store/gameStore.ts) の `startCombat(seed = Date.now())` に集約する。`initCombat()` は必ずシードを引数で受け取る。

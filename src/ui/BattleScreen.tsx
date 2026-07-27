@@ -20,7 +20,7 @@ export default function BattleScreen() {
       <div className="flex flex-1 items-center justify-center">
         <button
           type="button"
-          onClick={startCombat}
+          onClick={() => startCombat()}
           className="rounded-lg bg-red-700 px-8 py-4 text-lg font-bold text-white hover:bg-red-600"
         >
           Start Battle
@@ -50,7 +50,7 @@ export default function BattleScreen() {
         </div>
         <button
           type="button"
-          onClick={startCombat}
+          onClick={() => startCombat()}
           className="rounded-lg bg-zinc-700 px-6 py-3 font-bold text-white hover:bg-zinc-600"
         >
           Play Again
