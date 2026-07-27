@@ -17,14 +17,14 @@ export function createRngState(seed: number): RngState {
 // Fisher-Yatesシャッフル
 // 元の配列は変更せず，並べ替えた新しい配列と次の乱数状態を返す．
 export function shuffle<T>(
-  items: readonly T[],
+  array: readonly T[],
   state: RngState,
-): { items: T[]; state: RngState } {
+): { array: T[]; state: RngState } {
   const rng = xoroshiro128plusFromState(state);
-  const result = [...items];
+  const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
     const j = uniformInt(rng, 0, i);
     [result[i], result[j]] = [result[j], result[i]];
   }
-  return { items: result, state: rng.getState() };
+  return { array: result, state: rng.getState() };
 }

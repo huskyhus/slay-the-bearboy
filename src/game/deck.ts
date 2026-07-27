@@ -13,7 +13,7 @@ export function initDeck(
     definitionId: def.id,
   }));
   const shuffled = shuffle(cards, rngState);
-  return { deck: shuffled.items, rng: shuffled.state };
+  return { deck: shuffled.array, rng: shuffled.state };
 }
 
 export function drawCards(state: CombatState, count: number): CombatState {
@@ -28,7 +28,7 @@ export function drawCards(state: CombatState, count: number): CombatState {
     if (deck.length === 0) {
       if (discard.length === 0) break;
       const reshuffled = shuffle(discard, rng);
-      deck = reshuffled.items;
+      deck = reshuffled.array;
       rng = reshuffled.state;
       discard = [];
     }
