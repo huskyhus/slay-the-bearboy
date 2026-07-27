@@ -24,8 +24,6 @@ export function initCombat(
   enemyDefs: EnemyDefinition[],
   seed: number,
 ): CombatState {
-  const { maxHp, energyPerTurn } = GAME_CONFIG.player;
-
   const { deck, rng } = initDeck(cardDefs, createRngState(seed));
 
   const enemies: EnemyState[] = enemyDefs.map((def, index) => ({
@@ -44,10 +42,10 @@ export function initCombat(
     phase: "player_turn",
     turn: 1,
     player: {
-      hp: maxHp,
-      maxHp,
+      hp: GAME_CONFIG.player.maxHp,
+      maxHp: GAME_CONFIG.player.maxHp,
       block: 0,
-      energy: energyPerTurn,
+      energy: GAME_CONFIG.player.energyPerTurn,
       conditions: initConditionState(),
     },
     enemies,
@@ -89,13 +87,12 @@ function calcConditionedDamage(
   attacker: ConditionState,
   defender: ConditionState,
 ): number {
-  const { weakMultiplier, vulnerableMultiplier } = GAME_CONFIG.combat;
   let damage = baseDamage;
   if (attacker.weak > 0) {
-    damage = Math.floor(damage * weakMultiplier);
+    damage = Math.floor(damage * GAME_CONFIG.combat.weakMultiplier);
   }
   if (defender.vulnerable > 0) {
-    damage = Math.floor(damage * vulnerableMultiplier);
+    damage = Math.floor(damage * GAME_CONFIG.combat.vulnerableMultiplier);
   }
   return damage;
 }
@@ -306,15 +303,13 @@ export function executeEnemyTurn(
   }
 
   // Start next player turn
-  const { energyPerTurn, drawPerTurn } = GAME_CONFIG.player;
-
   // Reset block and refill energy for the upcoming player turn.
   // Player condition state is NOT ticked here; it ticks in endPlayerTurn so
   // that debuffs an enemy just applied remain active during the player's turn.
   player = {
     ...player,
     block: 0,
-    energy: energyPerTurn,
+    energy: GAME_CONFIG.player.energyPerTurn,
   };
 
   // Tick enemy condition state at the end of the enemy turn.
@@ -331,5 +326,5 @@ export function executeEnemyTurn(
     enemies,
   };
 
-  return drawCards(newState, drawPerTurn);
+  return drawCards(newState, GAME_CONFIG.player.drawPerTurn);
 }

@@ -21,10 +21,9 @@ export function drawCards(state: CombatState, count: number): CombatState {
   const hand = [...state.hand];
   let discard = [...state.discard];
   let rng = state.rng;
-  const { maxHandSize } = GAME_CONFIG.player;
 
   for (let i = 0; i < count; i++) {
-    if (hand.length >= maxHandSize) break;
+    if (hand.length >= GAME_CONFIG.player.maxHandSize) break;
 
     if (deck.length === 0) {
       if (discard.length === 0) break;
