@@ -1,5 +1,6 @@
-import { CONDITION_DEFINITIONS, type ConditionColor } from "@/game/conditions";
+import { conditionKeys } from "@/game/conditions";
 import type { ConditionState } from "@/game/types";
+import { CONDITION_STYLES, type ConditionColor } from "./conditionStyles";
 
 // Tailwindはクラス名を静的解析するため、`bg-${color}-900` のような動的クラス名は
 // 本番ビルドでパージされる可能性がある。色ごとに固定クラス名を用意する。
@@ -19,14 +20,15 @@ export default function ConditionBadges({
 }: Props) {
   return (
     <>
-      {Object.values(CONDITION_DEFINITIONS).map((def) => {
-        const value = conditions[def.key];
+      {conditionKeys().map((key) => {
+        const value = conditions[key];
         if (value <= 0) return null;
-        const label = variant === "short" ? def.shortLabel : def.label;
+        const style = CONDITION_STYLES[key];
+        const label = variant === "short" ? style.shortLabel : style.label;
         return (
           <span
-            key={def.key}
-            className={`rounded px-1.5 py-0.5 ${COLOR_CLASSES[def.color]}`}
+            key={key}
+            className={`rounded px-1.5 py-0.5 ${COLOR_CLASSES[style.color]}`}
           >
             {label} {value}
           </span>

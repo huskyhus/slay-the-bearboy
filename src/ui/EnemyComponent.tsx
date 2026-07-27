@@ -1,8 +1,8 @@
 "use client";
 
-import { CONDITION_DEFINITIONS } from "@/game/conditions";
 import type { Effect, EffectType, EnemyState } from "@/game/types";
 import ConditionBadges from "./ConditionBadges";
+import { CONDITION_STYLES } from "./conditionStyles";
 
 interface Props {
   enemy: EnemyState;
@@ -18,7 +18,7 @@ function intentLabel(intent: Effect): string {
     case "block":
       return `Defend ${intent.value}`;
     case "apply_condition":
-      return `${CONDITION_DEFINITIONS[intent.condition].label} ${intent.value}`;
+      return `${CONDITION_STYLES[intent.condition].label} ${intent.value}`;
     case "draw":
       return `Draw ${intent.value}`;
   }

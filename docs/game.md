@@ -37,13 +37,13 @@
 | Vulnerable（脆弱） | 敵 or プレイヤー | 受けるダメージを `GAME_CONFIG.combat.vulnerableMultiplier` 倍（端数切捨て） | ターン数で減少（付与された側のターン終了時に1減少） |
 | Weak（弱体） | 敵 or プレイヤー | 与えるダメージを `GAME_CONFIG.combat.weakMultiplier` 倍（端数切捨て） | ターン数で減少（付与された側のターン終了時に1減少） |
 
-> 減少タイミングを「ターン終了時」とするのは、敵がプレイヤーに付与したデバフが直後のプレイヤーターン中ずっと有効になるようにするため（実装： [src/game/combat.ts](../src/game/combat.ts) の `endPlayerTurn` / `executeEnemyTurn`）。
+> 減少タイミングを「ターン終了時」とするのは、敵がプレイヤーに付与したデバフが直後のプレイヤーターン中ずっと有効になるようにするため（減少タイミングは [src/game/combat.ts](../src/game/combat.ts) の `endPlayerTurn` / `executeEnemyTurn`、状態異常そのものの定義と演算は [src/game/conditions.ts](../src/game/conditions.ts)）。
 
 > 倍率は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG.combat` を正とする。
 
 ### 1.4 ダメージ計算
 
-ダメージ計算の実装を正とする： [src/game/combat.ts](../src/game/combat.ts)。アルゴリズムの要点は以下のとおり（倍率は `GAME_CONFIG.combat`）。
+ダメージ計算の実装を正とする： [src/game/combat.ts](../src/game/combat.ts) の `calcConditionedDamage` / `calcRemainingHpAndBlock`。アルゴリズムの要点は以下のとおり（倍率は `GAME_CONFIG.combat`）。
 
 ```
 基礎ダメージ = カードの damage 値
@@ -61,6 +61,8 @@ HP減少     = 実ダメージ
 ## 2. カードシステム
 
 ### 2.1 デッキゾーン
+
+ドローと山札の補充（捨て札のシャッフル）の実装は [src/game/deck.ts](../src/game/deck.ts) を正とする。手札から捨て札への移動はカードのプレイ／ターン終了に伴うため [src/game/combat.ts](../src/game/combat.ts) にある。
 
 | ゾーン | 説明 |
 |--------|------|
