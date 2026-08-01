@@ -8,6 +8,7 @@ import {
   executeEnemyTurn,
 } from "@/game/combat";
 import { needsTarget, hasAoeEffect } from "@/game/cards";
+import { createRandomSeed } from "@/game/rng";
 import cardsData from "@/data/cards.json";
 import enemiesData from "@/data/enemies.json";
 
@@ -48,9 +49,9 @@ export const useGameStore = create<GameStore>((set, get) => {
     combat: null,
     selectedCardInstanceId: null,
 
-    // 非決定的なシードの生成はここ（ストア境界）で行い，src/game/ は純粋に保つ．
+    // シードの生成は`createRandomSeed()`に集約する．
     // `seed`を明示すれば，同じ戦闘を再現できる．
-    startCombat: (seed: number = Date.now()) => {
+    startCombat: (seed: number = createRandomSeed()) => {
       set({
         combat: initCombat(cardDefs, enemyDefs, seed),
         selectedCardInstanceId: null,

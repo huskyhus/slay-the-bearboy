@@ -9,6 +9,14 @@ export function createRngState(seed: number): RngState {
   return seed >>> 0;
 }
 
+// 本プロジェクトで唯一の非決定的な関数．
+// 戦闘開始時のシードをここでだけ作り，以降の乱数はすべて`RngState`の受け渡しで決まる．
+// 不具合の再現やリプレイでは，この関数を呼ばずに記録済みのシードを渡す．
+// 同じシードが返り，同一の戦闘が量産されてしまうため．
+export function createRandomSeed(): number {
+  return crypto.getRandomValues(new Uint32Array(1))[0];
+}
+
 // 状態を1つ進め，[0, 1)の乱数と次の状態を返す．
 function nextFloat(state: RngState): { value: number; state: RngState } {
   const next = (state + 0x6d2b79f5) >>> 0;

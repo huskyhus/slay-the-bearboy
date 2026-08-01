@@ -23,12 +23,11 @@
 3. **ターン終了**
    - 手札をすべて捨て札に移動
 4. **敵の行動**
+   - 各敵のブロックを0にリセット
    - 各敵が予告されたアクションを実行
-   - 次ターンのアクションを決定・表示
-5. **ターン終了チェック**
    - プレイヤーHP <= 0 → 敗北
-   - 全敵HP <= 0 → 勝利
-   - いずれでもなければ手順1へ
+   - 次ターンのアクションを決定・表示
+5. **次のプレイヤーターンへ**（手順1へ戻る）
 
 ### 1.3 ステータス効果
 
@@ -46,7 +45,7 @@
 ダメージ計算の実装を正とする： [src/game/combat.ts](../src/game/combat.ts) の `calcConditionedDamage` / `calcRemainingHpAndBlock`。アルゴリズムの要点は以下のとおり（倍率は `GAME_CONFIG.combat`）。
 
 ```
-基礎ダメージ = カードの damage 値
+基礎ダメージ = カードまたは敵インテントの damage 値
 弱体補正   = 攻撃側が Weak なら × weakMultiplier（端数切捨て）
 脆弱補正   = 防御側が Vulnerable なら × vulnerableMultiplier（端数切捨て）
 最終ダメージ = floor(floor(基礎ダメージ × 弱体補正) × 脆弱補正)
@@ -75,7 +74,7 @@ HP減少     = 実ダメージ
 
 ### 2.2 データ構造
 
-カード関連の型定義（`CardType` / `CardRarity` / `EffectType` / `CardEffect` / `CardDefinition`）は [src/game/types.ts](../src/game/types.ts) を正とする。各効果種別の意味は以下のとおり。
+カード関連の型定義（`CardType` / `CardRarity` / `Effect` / `EffectType` / `CardDefinition`）は [src/game/types.ts](../src/game/types.ts) を正とする。各効果種別の意味は以下のとおり。
 
 | EffectType | 意味 |
 |------------|------|
@@ -132,4 +131,5 @@ v1.0 では **Jaw Worm** と **Louse** の2体が登場する。各敵の HP と
 - 乱数を使う処理はすべて [src/game/rng.ts](../src/game/rng.ts) に置く。実装には mulberry32 を用いる（外部ライブラリには依存しない）。
 - 乱数の状態は符号なし32bit整数1つ (`RngState = number`) として `CombatState.rng` に持ち、シャッフルのたびに更新される。乱数生成も純粋関数とし、値と次の状態を組で返す。生成アルゴリズムの詳細は `rng.ts` の内側に閉じ込め、外部には公開しない。
 - `CombatState.seed` には戦闘開始時のシードを保持する。同じシード・同じ操作列であれば戦闘全体を完全に再現できる（不具合再現・リプレイ用）。
-- 非決定的なシードの生成は [src/store/gameStore.ts](../src/store/gameStore.ts) の `startCombat(seed = Date.now())` に集約する。`initCombat()` は必ずシードを引数で受け取る。
+- 非決定的な処理は `rng.ts` の `createRandomSeed()` ただ1つに閉じ込める。この関数だけが例外的に外部のエントロピー源（`crypto.getRandomValues()`）を参照し、それ以外の `src/game/` のコードはすべて純粋関数とする。`Math.random()` を他のファイルで直接呼ばない。
+- `initCombat()` は必ずシードを引数で受け取る。シードを省略した場合の既定値の解決は [src/store/gameStore.ts](../src/store/gameStore.ts) の `startCombat(seed = createRandomSeed())` が行う。テストやシミュレータは `createRandomSeed()` を呼ばず、固定のシードを渡す。
