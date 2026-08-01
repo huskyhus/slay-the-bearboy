@@ -129,7 +129,7 @@ v1.0 では **Jaw Worm** と **Louse** の2体が登場する。各敵の HP と
 
 `src/game/` 以下は「同じ入力なら常に同じ結果を返す」純粋なロジックとして保つ。ユニットテストとバランス調整用シミュレータがこの性質を前提とするため、`Math.random()` や可変なモジュールグローバル変数は使わない。
 
-- 乱数を使う処理はすべて [src/game/rng.ts](../src/game/rng.ts) に置く。実装には [pure-rand](https://github.com/dubzzz/pure-rand) の xoroshiro128plus を用いる。
-- 乱数の状態はシリアライズ可能なスナップショット (`RngState`) として `CombatState.rng` に持ち、シャッフルのたびに更新される。可変なジェネレータ実体と pure-rand への依存は `rng.ts` の内側に閉じ込め、外部には公開しない。
+- 乱数を使う処理はすべて [src/game/rng.ts](../src/game/rng.ts) に置く。実装には mulberry32 を用いる（外部ライブラリには依存しない）。
+- 乱数の状態は符号なし32bit整数1つ (`RngState = number`) として `CombatState.rng` に持ち、シャッフルのたびに更新される。乱数生成も純粋関数とし、値と次の状態を組で返す。生成アルゴリズムの詳細は `rng.ts` の内側に閉じ込め、外部には公開しない。
 - `CombatState.seed` には戦闘開始時のシードを保持する。同じシード・同じ操作列であれば戦闘全体を完全に再現できる（不具合再現・リプレイ用）。
 - 非決定的なシードの生成は [src/store/gameStore.ts](../src/store/gameStore.ts) の `startCombat(seed = Date.now())` に集約する。`initCombat()` は必ずシードを引数で受け取る。
