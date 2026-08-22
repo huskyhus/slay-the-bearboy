@@ -11,6 +11,7 @@ import { needsTarget, hasAoeEffect } from "@/game/cards";
 import { createRandomSeed } from "@/game/rng";
 import cardsData from "@/data/cards.json";
 import enemiesData from "@/data/enemies.json";
+import { selectStarterDeck } from "@/game/deck";
 
 const cardDefs: CardDefinition[] = cardsData as CardDefinition[];
 const enemyDefs: EnemyDefinition[] = enemiesData as EnemyDefinition[];
@@ -53,7 +54,7 @@ export const useGameStore = create<GameStore>((set, get) => {
     // `seed`を明示すれば，同じ戦闘を再現できる．
     startCombat: (seed: number = createRandomSeed()) => {
       set({
-        combat: initCombat(cardDefs, enemyDefs, seed),
+        combat: initCombat(selectStarterDeck(cardDefs), enemyDefs, seed),
         selectedCardInstanceId: null,
       });
     },
