@@ -7,6 +7,7 @@ import { CONDITION_STYLES, type ConditionColor } from "./conditionStyles";
 const COLOR_CLASSES: Record<ConditionColor, string> = {
   orange: "bg-orange-900 text-orange-300",
   green: "bg-green-900 text-green-300",
+  purple: "bg-purple-900 text-purple-300",
 };
 
 interface Props {

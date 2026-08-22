@@ -19,6 +19,8 @@ function intentLabel(intent: Effect): string {
       return `Defend ${intent.value}`;
     case "apply_condition":
       return `${CONDITION_STYLES[intent.condition].label} ${intent.value}`;
+    case "obtain_condition":
+      return `Self ${CONDITION_STYLES[intent.condition].label} ${intent.value}`;
     case "draw":
       return `Draw ${intent.value}`;
   }
@@ -32,6 +34,7 @@ function intentColor(type: EffectType): string {
     case "block":
       return "text-blue-400";
     case "apply_condition":
+    case "obtain_condition":
       return "text-purple-400";
     default:
       return "text-zinc-400";
