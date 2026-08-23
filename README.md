@@ -30,6 +30,7 @@ slay-the-bearboy/
 
 ## 関連ドキュメント
 
+- [docs/architecture.md](docs/architecture.md) — 技術スタック・設計・アーキテクチャ（技術者向け）
 - [docs/game.md](docs/game.md) — ゲーム仕様
 - [docs/slay-the-bearboy-proposal.md](docs/slay-the-bearboy-proposal.md) — 提案書
 - [AGENTS.md](AGENTS.md) — AI エージェント向けガイド
