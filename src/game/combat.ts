@@ -3,6 +3,7 @@ import {
   applyCondition,
   initConditionState,
   tickConditionState,
+  triggerZen,
 } from "./conditions";
 import { drawCards, initDeck } from "./deck";
 import { createRngState } from "./rng";
@@ -46,6 +47,7 @@ export function initCombat(
       maxHp: GAME_CONFIG.player.maxHp,
       block: 0,
       energy: GAME_CONFIG.player.energyPerTurn,
+      zen: 0,
       conditions: initConditionState(),
     },
     enemies,
@@ -67,18 +69,31 @@ function applyDamageToEnemy(
   enemyId: string,
   baseDamage: number,
 ): CombatState {
+  const target = state.enemies.find((e) => e.id === enemyId);
+  if (!target) return state;
+
+  const finalDamage = calcConditionedDamage(
+    baseDamage,
+    state.player.conditions,
+    target.conditions,
+  );
+  const result = calcRemainingHpAndBlock(target, finalDamage);
+
+  // 被弾前のブロックを見る必要があるため，敵を更新する前にトリガを判定する．
+  let player = state.player;
+  if (finalDamage > 0) {
+    player = triggerZen(player, "damage_dealt");
+    if (target.block > 0) {
+      player = triggerZen(player, "attack_blocked");
+    }
+  }
+
   return {
     ...state,
-    enemies: state.enemies.map((e) => {
-      if (e.id !== enemyId) return e;
-      const finalDamage = calcConditionedDamage(
-        baseDamage,
-        state.player.conditions,
-        e.conditions,
-      );
-      const result = calcRemainingHpAndBlock(e, finalDamage);
-      return { ...e, hp: result.hp, block: result.block };
-    }),
+    player,
+    enemies: state.enemies.map((e) =>
+      e.id === enemyId ? { ...e, hp: result.hp, block: result.block } : e,
+    ),
   };
 }
 
@@ -153,12 +168,24 @@ export function playCard(
   if (!def) return state;
   if (!canPlayCard(state, def)) return state;
 
+  // パワーカードは戦闘中に一度だけ効果を得られるよう除外に送る．
+  // 除外は「捨て札に送る」ではないため card_discarded は発火しない．
+  const isPower = def.type === "power";
+
   let newState: CombatState = {
     ...state,
     player: { ...state.player, energy: state.player.energy - def.cost },
     hand: state.hand.filter((_, i) => i !== cardIndex),
-    discard: [...state.discard, card],
+    discard: isPower ? state.discard : [...state.discard, card],
+    exhaust: isPower ? [...state.exhaust, card] : state.exhaust,
   };
+
+  if (!isPower) {
+    newState = {
+      ...newState,
+      player: triggerZen(newState.player, "card_discarded"),
+    };
+  }
 
   for (const effect of def.effects) {
     newState = applyEffect(newState, effect, targetEnemyId);
@@ -211,6 +238,19 @@ function applyEffect(
         effect.value,
       );
     }
+    case "obtain_condition": {
+      return {
+        ...state,
+        player: {
+          ...state.player,
+          conditions: applyCondition(
+            state.player.conditions,
+            effect.condition,
+            effect.value,
+          ),
+        },
+      };
+    }
     case "draw": {
       return drawCards(state, effect.value);
     }
@@ -231,10 +271,14 @@ export function endPlayerTurn(state: CombatState): CombatState {
     phase: "enemy_turn" as const,
     hand: [],
     discard: [...state.discard, ...state.hand],
-    player: {
-      ...state.player,
-      conditions: tickConditionState(state.player.conditions),
-    },
+    player: triggerZen(
+      {
+        ...state.player,
+        conditions: tickConditionState(state.player.conditions),
+      },
+      "card_discarded",
+      state.hand.length,
+    ),
   };
 }
 
@@ -263,6 +307,13 @@ export function executeEnemyTurn(
           player.conditions,
         );
         const result = calcRemainingHpAndBlock(player, damage);
+        // 被弾前のブロック・HPを見る必要があるため，更新前にトリガを判定する．
+        if (damage > 0 && player.block > 0) {
+          player = triggerZen(player, "attack_absorbed");
+        }
+        if (result.hp < player.hp) {
+          player = triggerZen(player, "hp_lost");
+        }
         player = { ...player, hp: result.hp, block: result.block };
         break;
       }
@@ -279,6 +330,14 @@ export function executeEnemyTurn(
             intent.value,
           ),
         };
+        break;
+      }
+      case "obtain_condition": {
+        enemy.conditions = applyCondition(
+          enemy.conditions,
+          intent.condition,
+          intent.value,
+        );
         break;
       }
       // draw は敵の行動としては意味を持たないため無視

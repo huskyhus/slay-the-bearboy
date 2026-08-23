@@ -9,6 +9,7 @@
 | HP | 0になると敗北。初期値・最大値は `GAME_CONFIG.player.maxHp` |
 | ブロック | 毎ターン開始時に0へリセット。ダメージを先に吸収する |
 | エナジー | 毎ターン開始時に `GAME_CONFIG.player.energyPerTurn` へ回復。カード使用で消費 |
+| 座禅（zen） | パワーによって蓄積する整数。ブロックと違いターンをまたいで保持され、リセットされない。v1.0 では消費先を持たない |
 
 > 具体的な数値は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG` を正とする（ドキュメントには数値を重複させない）。
 
@@ -40,7 +41,27 @@
 
 > 倍率は [src/game/config.ts](../src/game/config.ts) の `GAME_CONFIG.combat` を正とする。
 
-### 1.4 ダメージ計算
+### 1.4 パワー（減少しないステータス効果）
+
+パワーはステータス効果の一種であり、`ConditionState` の一カラムとして表現する。デバフとの違いは 2 点だけである。
+
+- `decaysPerTurn: false` — ターン終了時に減少せず、戦闘が終わるまで残る。
+- `zenTrigger` — 対応するゲームイベントが起きるたび、**スタック数だけ座禅が増える**。
+
+各パワーがどのイベントを監視するかは [src/game/conditions.ts](../src/game/conditions.ts) の `CONDITION_RULES` を正とする。座禅の加算は `triggerZen` ただ 1 箇所を経由する。
+
+| イベント | 発火条件 |
+|---------|---------|
+| `damage_dealt` | プレイヤーの攻撃が敵に最終ダメージ 1 以上を与えた。全体攻撃は当たった敵の数だけ発火する |
+| `attack_blocked` | 上記に加え、被弾前の敵がブロックを持っていた |
+| `hp_lost` | 敵の攻撃でプレイヤーのHPが実際に減少した |
+| `attack_absorbed` | 敵の最終ダメージが 1 以上で、被弾前のプレイヤーがブロックを持っていた |
+| `card_drawn` | カードを 1 枚引いた。手札上限や山札枯渇で引けなかった分は数えない |
+| `card_discarded` | カードを 1 枚捨て札に送った。捨て札を山札に戻すリシャッフルと、パワーカードの除外は含まない |
+
+新しいパワーを 1 つ足すには、`ConditionState` にカラム 1 行、`CONDITION_RULES` に規則 1 行、[src/ui/conditionStyles.ts](../src/ui/conditionStyles.ts) に表示 1 行、そして [cards.json](../src/data/cards.json) の該当カードを `obtain_condition` にするだけでよい。いずれかを忘れると型エラーになる。既存のイベントを再利用する限り、発火箇所のコードには手を入れない。
+
+### 1.5 ダメージ計算
 
 ダメージ計算の実装を正とする： [src/game/combat.ts](../src/game/combat.ts) の `calcConditionedDamage` / `calcRemainingHpAndBlock`。アルゴリズムの要点は以下のとおり（倍率は `GAME_CONFIG.combat`）。
 
@@ -72,6 +93,8 @@ HP減少     = 実ダメージ
 | 捨て札 | 使用済み・ターン終了時に手札から移動 |
 | 除外 | ゲームから除外されたカード。再利用不可 |
 
+パワーカード（`type: "power"`）はプレイ後に捨て札ではなく**除外**へ送る。山札が一巡するたびに同じパワーを取得してスタックが際限なく増えるのを防ぐためである。除外は「捨て札に送る」ではないため `card_discarded` は発火しない。
+
 ### 2.2 データ構造
 
 カード関連の型定義（`CardType` / `CardRarity` / `Effect` / `EffectType` / `CardDefinition`）は [src/game/types.ts](../src/game/types.ts) を正とする。各効果種別の意味は以下のとおり。
@@ -81,8 +104,11 @@ HP減少     = 実ダメージ
 | `damage` | 単体ダメージ |
 | `damage_all` | 全体ダメージ |
 | `block` | ブロック付与（自分） |
-| `apply_condition` | ステータス効果付与（`condition` フィールドで対象キーを指定。例: `vulnerable`, `weak`） |
+| `apply_condition` | **相手**にステータス効果を付与（`condition` フィールドで対象キーを指定。例: `vulnerable`, `weak`） |
+| `obtain_condition` | **自分**にステータス効果を付与（パワーの取得に用いる。例: `destroyer`） |
 | `draw` | カードドロー |
+
+`CardType` は `attack` / `skill` に加えて `power` を持つ。`power` はカードがパワーであること（＝プレイ後に除外へ送られること）を表す。
 
 ### 2.3 カード一覧
 
