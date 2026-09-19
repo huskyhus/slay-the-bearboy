@@ -20,7 +20,7 @@ function intentLabel(intent: Effect): string {
     case "apply_condition":
       return `${CONDITION_STYLES[intent.condition].label} ${intent.value}`;
     case "obtain_condition":
-      return `Self ${CONDITION_STYLES[intent.condition].label} ${intent.value}`;
+      return `Obtain ${CONDITION_STYLES[intent.condition].label} ${intent.value}`;
     case "draw":
       return `Draw ${intent.value}`;
   }
