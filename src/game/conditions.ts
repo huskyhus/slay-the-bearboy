@@ -1,7 +1,6 @@
 import type { ConditionKey, ConditionState, PlayerState } from "./types";
 
-// 座禅を増やすきっかけになるゲームイベント．
-// 発火箇所は combat.ts と deck.ts にあり，triggerZen() 経由でのみ座禅が増える．
+// 一部のConditionが発火するイベントの種類を定義する．
 export type GameEvent =
   | "damage_dealt" // プレイヤーが敵にダメージを与えた
   | "attack_blocked" // プレイヤーの攻撃が敵のブロックに阻まれた
@@ -12,8 +11,7 @@ export type GameEvent =
 
 interface ConditionRule {
   decaysPerTurn: boolean;
-  // 指定した場合，そのイベントが起きるたびスタック数だけ座禅が増える（パワー）．
-  zenTrigger?: GameEvent;
+  zenTrigger?: GameEvent; // 指定した場合，そのイベントが起きるたびスタック数だけ座禅が増える（パワー）．
 }
 
 export const CONDITION_RULES: Record<ConditionKey, ConditionRule> = {
@@ -54,7 +52,6 @@ export function conditionKeys(): ConditionKey[] {
 }
 
 export function initConditionState(): ConditionState {
-  // キーの追加漏れを防ぐため，規則テーブルから全キーを 0 で生成する．
   const conditions = {} as ConditionState;
   for (const key of conditionKeys()) {
     conditions[key] = 0;
@@ -95,7 +92,6 @@ export function triggerZen(
       gained += player.conditions[key] * times;
     }
   }
-  if (gained === 0) return player;
-
-  return { ...player, zen: player.zen + gained };
+  // 加算が0なら同じ参照を返す（パワー未取得でも毎ヒット呼ばれるため）．
+  return gained === 0 ? player : { ...player, zen: player.zen + gained };
 }
