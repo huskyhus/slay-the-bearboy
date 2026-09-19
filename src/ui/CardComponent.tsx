@@ -12,7 +12,14 @@ interface Props {
 }
 
 function typeColor(type: CardType): string {
-  return type === "attack" ? "border-red-600" : "border-blue-600";
+  switch (type) {
+    case "attack":
+      return "border-red-600";
+    case "power":
+      return "border-purple-600";
+    default:
+      return "border-blue-600";
+  }
 }
 
 function rarityBg(rarity: CardRarity): string {

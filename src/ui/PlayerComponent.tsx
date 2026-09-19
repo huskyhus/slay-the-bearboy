@@ -19,6 +19,7 @@ export default function PlayerComponent({ player }: Props) {
           <span className="text-blue-400">Block {player.block}</span>
         )}
         <span className="text-yellow-400">Energy {player.energy}</span>
+        <span className="text-purple-400">座禅 {player.zen}</span>
       </div>
       <div className="flex gap-2 text-xs">
         <ConditionBadges conditions={player.conditions} />

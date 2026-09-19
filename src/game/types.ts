@@ -2,14 +2,16 @@ import type { RngState } from "./rng";
 
 // --- Card Types ---
 
-export type CardType = "attack" | "skill";
+export type CardType = "attack" | "skill" | "power";
 export type CardRarity = "basic" | "common" | "uncommon";
 
 export type Effect =
   | { type: "damage"; value: number }
   | { type: "damage_all"; value: number }
   | { type: "block"; value: number }
+  // apply_condition は「相手」に，obtain_condition は「自分」に付与する．
   | { type: "apply_condition"; condition: ConditionKey; value: number }
+  | { type: "obtain_condition"; condition: ConditionKey; value: number }
   | { type: "draw"; value: number };
 
 export type EffectType = Effect["type"];
@@ -44,9 +46,19 @@ export interface EnemyDefinition {
 
 // --- Combat State ---
 
+// パワーもコンディションの一種として扱う（減少しないコンディション）．
+// キーを1つ増やしたら conditions.ts の CONDITION_RULES にも規則を足す必要がある
+// （足さなければ型エラーになる）．
 export interface ConditionState {
   vulnerable: number;
   weak: number;
+  // --- パワー（減少せず，スタック数だけ座禅が増える）---
+  destroyer: number; // 壊す ﾆﾔﾘ
+  powerless: number; // あまりに無力な存在
+  own_folly: number; // おのれの愚かさ今知る！
+  breaking: number; // 壊れる…
+  desire: number; // 人は欲望と共にある
+  farewell_desire: number; // 欲望よさらば
 }
 
 export type ConditionKey = keyof ConditionState;
@@ -56,6 +68,8 @@ export interface PlayerState {
   maxHp: number;
   block: number;
   energy: number;
+  // 戦闘中に蓄積する．ブロックと違いターンをまたいで保持し，リセットしない．
+  zen: number;
   conditions: ConditionState;
 }
 
