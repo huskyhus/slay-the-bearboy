@@ -81,10 +81,7 @@ export default function EnemyComponent({
 
       {/* Conditions */}
       <div className="flex gap-1 text-xs">
-        <ConditionBadges
-          conditions={enemy.conditions}
-          variant="short"
-        />
+        <ConditionBadges conditions={enemy.conditions} />
       </div>
 
       {/* Intent */}

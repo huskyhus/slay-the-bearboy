@@ -18,26 +18,21 @@ function durationText(decaysPerTurn: boolean): string {
 
 interface Props {
   conditions: ConditionState;
-  variant?: "full" | "short";
 }
 
-export default function ConditionBadges({
-  conditions,
-  variant = "full",
-}: Props) {
+export default function ConditionBadges({ conditions }: Props) {
   return (
     <>
       {conditionKeys().map((key) => {
         const value = conditions[key];
         if (value <= 0) return null;
         const style = CONDITION_STYLES[key];
-        const label = variant === "short" ? style.shortLabel : style.label;
         return (
           <span key={key} className="group relative inline-block">
             <span
               className={`inline-block rounded px-1.5 py-0.5 ${COLOR_CLASSES[style.color]}`}
             >
-              {label} {value}
+              {style.label} {value}
             </span>
             <span
               role="tooltip"
