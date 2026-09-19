@@ -25,12 +25,12 @@ export const CONDITION_STYLES: Record<ConditionKey, ConditionStyle> = {
   destroyer: {
     label: "壊す ﾆﾔﾘ",
     color: "purple",
-    description: "敵にダメージを与えるたび、座禅が増える。",
+    description: "敵のHPを削るたび、座禅が増える。",
   },
   powerless: {
     label: "あまりに無力な存在",
     color: "purple",
-    description: "ブロックを持つ敵にダメージを与えるたび、座禅が増える。",
+    description: "ブロックを持つ敵を攻撃するたび、座禅が増える。",
   },
   own_folly: {
     label: "おのれの愚かさ今知る！",

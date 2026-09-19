@@ -2,8 +2,8 @@ import type { ConditionKey, ConditionState, PlayerState } from "./types";
 
 // 一部のConditionが発火するイベントの種類を定義する．
 export type GameEvent =
-  | "damage_dealt" // プレイヤーが敵にダメージを与えた
-  | "attack_blocked" // プレイヤーの攻撃が敵のブロックに阻まれた
+  | "damage_dealt" // プレイヤーの攻撃で敵のHPが減少した
+  | "attack_blocked" // プレイヤーがブロックを持つ敵に攻撃した
   | "hp_lost" // プレイヤーのHPが減少した
   | "attack_absorbed" // プレイヤーのブロックが敵の攻撃を受け止めた
   | "card_drawn" // カードを1枚引いた

@@ -79,13 +79,14 @@ function applyDamageToEnemy(
   );
   const result = calcRemainingHpAndBlock(target, finalDamage);
 
-  // 被弾前のブロックを見る必要があるため，敵を更新する前にトリガを判定する．
+  // 被弾前のブロックとHPを見る必要があるため，敵を更新する前にトリガを判定する．
+  // 判定条件は敵ターン側（attack_absorbed / hp_lost）と対称にしてある．
   let player = state.player;
-  if (finalDamage > 0) {
+  if (finalDamage > 0 && target.block > 0) {
+    player = triggerZen(player, "attack_blocked");
+  }
+  if (result.hp < target.hp) {
     player = triggerZen(player, "damage_dealt");
-    if (target.block > 0) {
-      player = triggerZen(player, "attack_blocked");
-    }
   }
 
   return {
